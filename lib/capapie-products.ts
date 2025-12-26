@@ -278,3 +278,13 @@ export function getCapapieCategories(): string[] {
   const categories = new Set(capapieProductsData.map((p) => p.category));
   return Array.from(categories).sort();
 }
+
+// Get featured products for homepage (selects a curated mix of products)
+export function getFeaturedCapapieProducts(): DisplayProduct[] {
+  // Featured product codes - a curated selection across categories
+  const featuredCodes = ['1015', '1005', '1017', '1079']; // Topline Jacket, Premium Jacket, Premium Rifle Shoes, Capiglo Top Grip Glove
+  return capapieProductsData
+    .filter((p) => featuredCodes.includes(p.product_code))
+    .map(toDisplayProduct)
+    .slice(0, 4); // Limit to 4 products for clean display
+}

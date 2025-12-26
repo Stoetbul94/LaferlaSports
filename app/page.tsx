@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getFeaturedProducts } from '@/lib/products';
-import ProductCard from '@/components/ProductCard';
+import { getFeaturedCapapieProducts } from '@/lib/capapie-products';
+import FeaturedProductCard from '@/components/FeaturedProductCard';
+import { DisplayProduct } from '@/types/product-data';
 
 export default function HomePage() {
-  const featuredProducts = getFeaturedProducts();
+  const featuredProducts = getFeaturedCapapieProducts();
 
   return (
     <>
@@ -112,17 +113,20 @@ export default function HomePage() {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="section-padding bg-dark">
-          <div className="container-custom">
+        <section className="section-padding bg-dark relative overflow-hidden">
+          {/* Subtle background accent */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
+          
+          <div className="container-custom relative z-10">
             <div className="text-center mb-16">
               <h2 className="heading-2 mb-6 text-text-primary">Featured Products</h2>
               <p className="text-body max-w-2xl mx-auto text-lg">
                 Discover our selection of professional-grade ISSF competition equipment
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map((product: DisplayProduct) => (
+                <FeaturedProductCard key={product.product_code} product={product} />
               ))}
             </div>
             <div className="text-center mt-16">
