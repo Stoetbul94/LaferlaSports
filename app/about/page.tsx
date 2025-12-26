@@ -1,4 +1,5 @@
-import Logo from '@/components/Logo';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'About Us - Laferla Sports',
@@ -11,7 +12,16 @@ export default function AboutPage() {
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col items-center mb-12">
-            <Logo size="xl" className="mb-6" />
+            <div className="relative h-64 w-64 md:h-80 md:w-80 mb-6">
+              <Image
+                src="/images/logo4.png"
+                alt="Laferla Sports Logo"
+                fill
+                className="object-contain"
+                priority
+                sizes="(max-width: 768px) 256px, 320px"
+              />
+            </div>
             <h1 className="heading-1 text-text-primary">About Laferla Sports</h1>
           </div>
 
@@ -68,17 +78,44 @@ export default function AboutPage() {
             </section>
 
             <section className="mb-12">
-              <h2 className="heading-3 mb-6 text-text-primary">Our Products</h2>
+              <h2 className="heading-3 mb-6 text-text-primary">Premium ISSF-Compliant Shooting Gear</h2>
               <p className="text-body mb-6 text-lg leading-relaxed">
-                We specialize in ISSF-compliant equipment across all disciplines:
+                Laferla Sports offers the complete Capapie range of precision-engineered shooting equipment, 
+                designed to meet the exacting standards of international competitive shooting. Our product 
+                lineup emphasizes performance, compliance, and technical excellence for serious athletes.
               </p>
-              <ul className="list-disc list-inside space-y-3 text-body text-text-secondary text-lg">
-                <li><strong className="text-text-primary">Pistol Equipment:</strong> Competition air pistols and accessories for 10m and 25m events</li>
-                <li><strong className="text-text-primary">Rifle Equipment:</strong> Precision air rifles and accessories for 10m and 50m events</li>
-                <li><strong className="text-text-primary">Shotgun Equipment:</strong> Competition shotguns and accessories for trap and skeet</li>
-                <li><strong className="text-text-primary">Apparel:</strong> ISSF-compliant shooting jackets, pants, and accessories</li>
-                <li><strong className="text-text-primary">Accessories:</strong> Sights, grips, ammunition, and essential competition gear</li>
+              <ul className="space-y-4 text-body text-text-secondary text-lg">
+                <li>
+                  <strong className="text-text-primary">Jackets & Trousers:</strong> ISSF-compliant competition 
+                  apparel featuring CAPITEX® materials, anatomical precision cuts, and engineered stability 
+                  systems. Our range includes premium, professional, and entry-level options with advanced 
+                  features such as top grip reinforcement, breathing stabilizers, and customizable fit adjustments 
+                  for optimal shooting position support.
+                </li>
+                <li>
+                  <strong className="text-text-primary">Gloves:</strong> Professional shooting gloves engineered 
+                  for grip, support, and ISSF compliance. Our selection includes cut-finger designs with anti-slip 
+                  surfaces, mesh ventilation, and advanced materials like Swiss Tech cooling technology for 
+                  enhanced performance during extended competition sessions.
+                </li>
+                <li>
+                  <strong className="text-text-primary">Inners:</strong> Technical base layers designed to be 
+                  worn beneath shooting jackets and trousers. CAPIFLEX® inner systems provide compression, 
+                  moisture management, and additional stability layers, enhancing the performance of outer 
+                  competition garments.
+                </li>
+                <li>
+                  <strong className="text-text-primary">Shoes:</strong> Specialized shooting footwear engineered 
+                  for rifle and pistol disciplines. These competition-grade shoes feature precision construction, 
+                  ISSF-compliant designs, and support for all shooting positions with enhanced stability and 
+                  comfort for extended range sessions.
+                </li>
               </ul>
+              <div className="mt-8">
+                <Link href="/shop" className="btn btn-primary">
+                  Browse Complete Product Catalog
+                </Link>
+              </div>
             </section>
 
             <section className="mb-12">

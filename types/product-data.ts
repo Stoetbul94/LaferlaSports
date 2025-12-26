@@ -6,6 +6,7 @@ export interface CapapieProduct {
   short_description: string;
   long_description: string; // Always present (empty string if not in Excel)
   image_filename: string;
+  product_link?: string; // Optional external link to official Capapie product page
 }
 
 // Extended product type for UI (without pricing)
@@ -16,5 +17,6 @@ export interface DisplayProduct {
   short_description: string;
   long_description: string; // Defaults to empty string if not provided
   image_path: string; // Resolved path: /images/products/{image_filename}
+  product_link?: string; // Optional external link to official Capapie product page
 }
 

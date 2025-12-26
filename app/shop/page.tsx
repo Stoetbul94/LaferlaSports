@@ -1,6 +1,7 @@
 import { getAllCapapieProducts, getCapapieCategories } from '@/lib/capapie-products';
 import CapapieProductCard from '@/components/CapapieProductCard';
 import Link from 'next/link';
+import { categoryToSlug } from '@/lib/category-slug';
 
 export const metadata = {
   title: 'Shop - Laferla Sports | ISSF Shooting Equipment',
@@ -29,11 +30,26 @@ export default function ShopPage() {
             <h2 className="heading-3 mb-8 text-text-primary">Shop by Category</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {categories.map((category) => {
+                // Guard: skip invalid categories
+                if (!category || typeof category !== "string") {
+                  return null;
+                }
+                
                 const categoryProducts = products.filter((p) => p.category.toLowerCase() === category.toLowerCase());
+                const categorySlug = categoryToSlug(category);
+                
+                // Guard: skip if slug generation failed
+                if (!categorySlug) {
+                  if (process.env.NODE_ENV === "development") {
+                    console.warn("[Dev] ShopPage: Failed to generate slug for category", category);
+                  }
+                  return null;
+                }
+                
                 return (
                   <Link
                     key={category}
-                    href={`/shop/${encodeURIComponent(category.toLowerCase())}`}
+                    href={`/shop/${categorySlug}`}
                     className="bg-dark-lighter border border-dark-border hover:border-accent rounded-lg p-6 text-center transition-all duration-200 hover:shadow-xl hover:shadow-accent/10"
                   >
                     <div className="font-bold text-text-primary mb-2 uppercase tracking-wide">{category}</div>

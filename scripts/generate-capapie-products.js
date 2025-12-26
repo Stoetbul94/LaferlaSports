@@ -112,6 +112,7 @@ try {
     const category = getField('Category');
     const short_description = getField('Short Description');
     const image_filename = getField('Image filename'); // Handles "Image filename " with trailing space
+    const product_link = getField('Product Link'); // External link to official Capapie product page
     
     // long_description does not exist in Excel - set to empty string
     const long_description = '';
@@ -131,13 +132,14 @@ try {
     }
 
     // Format product object
+    const productLinkField = product_link ? `\n    product_link: ${JSON.stringify(product_link)},` : '';
     return `  {
     product_code: ${JSON.stringify(product_code)},
     product_name: ${JSON.stringify(product_name)},
     category: ${JSON.stringify(category)},
     short_description: ${JSON.stringify(short_description)},
     long_description: ${JSON.stringify(long_description)},
-    image_filename: ${JSON.stringify(image_filename)},
+    image_filename: ${JSON.stringify(image_filename)},${productLinkField}
   }`;
   }).filter(Boolean); // Remove null entries
 
@@ -161,8 +163,9 @@ function toDisplayProduct(product: CapapieProduct): DisplayProduct {
     name: product.product_name,
     category: product.category,
     short_description: product.short_description,
-    long_description: product.long_description,
+    long_description: product.long_description || '', // Default to empty string if not provided
     image_path: \`/images/products/\${product.image_filename}\`,
+    product_link: product.product_link, // Pass through optional external link
   };
 }
 

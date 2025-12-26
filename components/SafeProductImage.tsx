@@ -12,7 +12,7 @@ interface SafeProductImageProps {
   priority?: boolean;
 }
 
-// Image filenames will be normalized later via batch process
+// Image filenames will be normalized and validated later via batch process
 const FALLBACK_IMAGE = '/images/products/placeholder.png';
 
 export default function SafeProductImage({
@@ -24,28 +24,44 @@ export default function SafeProductImage({
   priority = false,
 }: SafeProductImageProps) {
   const [imageSrc, setImageSrc] = useState<string>(src || FALLBACK_IMAGE);
-  const [isFallback, setIsFallback] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const effectiveSrc = src || FALLBACK_IMAGE;
+    // Reset state when src changes
+    const effectiveSrc = src?.trim() || FALLBACK_IMAGE;
     
-    if (!src || src === FALLBACK_IMAGE) {
+    if (!src || src.trim() === '' || src === FALLBACK_IMAGE) {
       setImageSrc(FALLBACK_IMAGE);
-      setIsFallback(true);
+      setHasError(false);
       return;
     }
 
-    // Pre-validate image exists
+    // Validate image exists before rendering
     const img = new window.Image();
+    let isMounted = true;
+
     img.onerror = () => {
-      setImageSrc(FALLBACK_IMAGE);
-      setIsFallback(true);
+      if (isMounted) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`[Dev] Image not found: ${effectiveSrc}`);
+        }
+        setImageSrc(FALLBACK_IMAGE);
+        setHasError(true);
+      }
     };
+
     img.onload = () => {
-      setImageSrc(effectiveSrc);
-      setIsFallback(false);
+      if (isMounted) {
+        setImageSrc(effectiveSrc);
+        setHasError(false);
+      }
     };
+
     img.src = effectiveSrc;
+
+    return () => {
+      isMounted = false;
+    };
   }, [src]);
 
   const finalSrc = imageSrc || FALLBACK_IMAGE;
@@ -59,7 +75,7 @@ export default function SafeProductImage({
         className={className}
         sizes={sizes}
         priority={priority}
-        unoptimized={isFallback}
+        unoptimized={hasError || finalSrc === FALLBACK_IMAGE}
       />
     );
   }
@@ -72,7 +88,7 @@ export default function SafeProductImage({
       className={className}
       sizes={sizes}
       priority={priority}
-      unoptimized={isFallback}
+      unoptimized={hasError || finalSrc === FALLBACK_IMAGE}
     />
   );
 }

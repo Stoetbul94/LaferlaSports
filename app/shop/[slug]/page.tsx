@@ -3,11 +3,12 @@ import { getCapapieProductByCode, getAllCapapieProducts, getCapapieProductsByCat
 import CapapieProductCard from '@/components/CapapieProductCard';
 import SafeProductImage from '@/components/SafeProductImage';
 import Link from 'next/link';
+import { categoryToSlug, slugToCategory } from '@/lib/category-slug';
 
 interface ShopDynamicPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -23,7 +24,7 @@ export async function generateStaticParams() {
   
   const categoryParams = categories.length > 0
     ? categories.map((category) => ({
-        slug: category.toLowerCase(),
+        slug: categoryToSlug(category),
       }))
     : [];
   
@@ -32,7 +33,12 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ShopDynamicPageProps) {
-  const slug = params.slug;
+  // Safely extract slug from params (params is now a Promise in Next.js 16)
+  const { slug } = await params;
+  
+  if (!slug || typeof slug !== "string") {
+    return { title: 'Page Not Found - Laferla Sports' };
+  }
   
   // Check if it's a product_code first
   const product = getCapapieProductByCode(slug);
@@ -43,24 +49,31 @@ export async function generateMetadata({ params }: ShopDynamicPageProps) {
     };
   }
   
-  // Check if it's a category
-  const categoryName = decodeURIComponent(slug);
+  // Check if it's a category slug
   const allCategories = getCapapieCategories();
-  const categoryExists = allCategories.some(c => c.toLowerCase() === categoryName.toLowerCase());
+  const categoryName = slugToCategory(slug, allCategories);
   
-  if (categoryExists) {
-    const displayCategoryName = allCategories.find(c => c.toLowerCase() === categoryName.toLowerCase()) || categoryName;
+  if (categoryName) {
     return {
-      title: `${displayCategoryName} - Laferla Sports`,
-      description: `Browse ${displayCategoryName} products from Laferla Sports`,
+      title: `${categoryName} - Laferla Sports`,
+      description: `Browse ${categoryName} products from Laferla Sports`,
     };
   }
   
-  return { title: 'Page Not Found' };
+  return { title: 'Page Not Found - Laferla Sports' };
 }
 
-export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
-  const slug = params.slug;
+export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) {
+  // Safely extract slug from params (params is now a Promise in Next.js 16)
+  const { slug } = await params;
+  
+  // Guard: slug must exist and be a string
+  if (!slug || typeof slug !== "string") {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[Dev] ShopDynamicPage: slug is undefined or invalid", slug);
+    }
+    notFound();
+  }
   
   // Check if it's a product_code first
   const product = getCapapieProductByCode(slug);
@@ -72,6 +85,10 @@ export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
           {/* Breadcrumb */}
           <nav className="mb-8 text-sm text-text-secondary uppercase tracking-wide">
             <Link href="/shop" className="hover:text-accent transition-colors">Shop</Link>
+            <span className="mx-2">/</span>
+            <Link href={`/shop/${categoryToSlug(product.category)}`} className="hover:text-accent transition-colors capitalize">
+              {product.category}
+            </Link>
             <span className="mx-2">/</span>
             <span className="text-text-primary">{product.name}</span>
           </nav>
@@ -117,6 +134,33 @@ export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
                 </div>
               )}
 
+              {/* External Product Link */}
+              {product.product_link && product.product_link.trim() && (
+                <div className="mb-8">
+                  <a
+                    href={product.product_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 border-2 border-accent text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wide font-semibold text-sm rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark"
+                  >
+                    <svg 
+                      className="w-4 h-4" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      />
+                    </svg>
+                    View official Capapie product page
+                  </a>
+                </div>
+              )}
+
               {/* Additional Info */}
               <div className="text-sm text-text-secondary space-y-3 pt-8 border-t border-dark-border">
                 <p className="flex items-center">
@@ -139,14 +183,12 @@ export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
     );
   }
   
-  // Check if it's a category
-  const categoryName = decodeURIComponent(slug);
+  // Check if it's a category slug
   const allCategories = getCapapieCategories();
-  const categoryExists = allCategories.some(c => c.toLowerCase() === categoryName.toLowerCase());
+  const categoryName = slugToCategory(slug, allCategories);
   
-  if (categoryExists) {
-    const products = getCapapieProductsByCategory(categoryName);
-    const displayCategoryName = allCategories.find(c => c.toLowerCase() === categoryName.toLowerCase()) || categoryName;
+  if (categoryName) {
+    const categoryProducts = getCapapieProductsByCategory(categoryName);
     
     // Render category page
     return (
@@ -156,18 +198,39 @@ export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
           <nav className="mb-8 text-sm text-text-secondary uppercase tracking-wide">
             <Link href="/shop" className="hover:text-accent transition-colors">Shop</Link>
             <span className="mx-2">/</span>
-            <span className="text-text-primary">{displayCategoryName}</span>
+            <span className="text-text-primary">{categoryName}</span>
           </nav>
 
-          {/* Page Header */}
+          {/* Page Header with Back Button */}
           <div className="mb-16">
-            <h1 className="heading-1 mb-6 text-text-primary">{displayCategoryName}</h1>
+            <div className="mb-6">
+              <Link 
+                href="/shop" 
+                className="inline-flex items-center text-text-secondary hover:text-accent transition-colors uppercase tracking-wide text-sm font-semibold"
+              >
+                <svg 
+                  className="w-4 h-4 mr-2" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+                  />
+                </svg>
+                Back to Shop
+              </Link>
+            </div>
+            <h1 className="heading-1 mb-6 text-text-primary">{categoryName}</h1>
           </div>
 
           {/* Products Grid */}
-          {products.length > 0 ? (
+          {categoryProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product) => (
+              {categoryProducts.map((product) => (
                 <CapapieProductCard key={product.product_code} product={product} />
               ))}
             </div>
@@ -184,7 +247,7 @@ export default function ShopDynamicPage({ params }: ShopDynamicPageProps) {
     );
   }
   
-  // Not found
+  // Not found - invalid category slug or product code
   notFound();
 }
 
