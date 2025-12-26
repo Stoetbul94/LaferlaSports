@@ -12,29 +12,33 @@
   }
   
   body {
-    @apply bg-white text-primary-900 antialiased;
+    @apply bg-dark text-text-primary antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-primary;
+  }
+  
+  p {
+    @apply text-text-secondary;
   }
 }
 
 @layer components {
   .btn {
-    @apply px-6 py-3 font-medium transition-all duration-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply px-8 py-4 font-semibold uppercase tracking-wider transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark;
   }
   
   .btn-primary {
-    @apply bg-primary-900 text-white hover:bg-primary-800 focus:ring-primary-900;
+    @apply bg-accent text-white hover:bg-accent-hover focus:ring-accent shadow-lg shadow-accent/20;
   }
   
   .btn-secondary {
-    @apply bg-primary-100 text-primary-900 hover:bg-primary-200 focus:ring-primary-500;
-  }
-  
-  .btn-accent {
-    @apply bg-accent text-white hover:bg-accent-light focus:ring-accent;
+    @apply bg-transparent border-2 border-accent text-accent hover:bg-accent hover:text-white focus:ring-accent;
   }
   
   .btn-outline {
-    @apply border-2 border-primary-900 text-primary-900 hover:bg-primary-900 hover:text-white focus:ring-primary-900;
+    @apply bg-transparent border-2 border-text-secondary text-text-primary hover:border-accent hover:text-accent focus:ring-accent;
   }
   
   .container-custom {
@@ -42,23 +46,26 @@
   }
   
   .section-padding {
-    @apply py-12 md:py-16 lg:py-20;
+    @apply py-16 md:py-24 lg:py-32;
   }
   
   .heading-1 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    @apply text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-widest leading-tight;
   }
   
   .heading-2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide leading-tight;
   }
   
   .heading-3 {
-    @apply text-2xl md:text-3xl font-semibold tracking-tight;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wide;
   }
   
   .text-body {
-    @apply text-base md:text-lg text-primary-700 leading-relaxed;
+    @apply text-base md:text-lg text-text-secondary leading-relaxed;
+  }
+  
+  .card {
+    @apply bg-dark-lighter border border-dark-border rounded-lg p-6 shadow-xl;
   }
 }
-

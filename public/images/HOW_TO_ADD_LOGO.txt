@@ -1,0 +1,35 @@
+===========================================
+HOW TO ADD YOUR LAFERLA SPORTS LOGO
+===========================================
+
+STEP 1: Get your logo file
+- You should have a logo file (SVG, PNG, or JPG format)
+- The logo should show the metallic gold wolf head in shield
+- Text should say "LAFERLA SPORTING"
+
+STEP 2: Place the file in this directory
+- Copy your logo file to: public/images/
+- Rename it to exactly: logo.svg (or logo.png or logo.jpg)
+
+STEP 3: Verify the file
+- The full path should be: public/images/logo.svg
+- Make sure the filename is exactly "logo" (lowercase)
+- Keep the file extension (.svg, .png, or .jpg)
+
+STEP 4: Refresh the website
+- The logo will automatically appear in:
+  * Header (top left navigation)
+  * Footer (company info section)
+  * About page (centered at top)
+
+===========================================
+CURRENT STATUS
+===========================================
+The logo file is NOT currently in the project.
+Once you add it, it will appear automatically.
+
+If you need help:
+1. Make sure the file is in public/images/
+2. Check the filename is exactly "logo.svg" (or .png/.jpg)
+3. Restart the dev server if needed
+

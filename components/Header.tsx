@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/cart-store';
 import { useState } from 'react';
@@ -13,6 +14,7 @@ export default function Header() {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Shop', href: '/shop' },
+    { name: 'Coaching', href: '/coaching' },
     { name: 'About', href: '/about' },
     { name: 'Capapie', href: '/capapie' },
     { name: 'Shipping', href: '/shipping' },
@@ -22,27 +24,42 @@ export default function Header() {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <header className="bg-white border-b border-primary-200 sticky top-0 z-50">
+    <header className="bg-dark border-b border-dark-border sticky top-0 z-50 backdrop-blur-sm bg-dark/95">
       <nav className="container-custom">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-28">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-primary-900">Laferla Sports</span>
+          <Link href="/" className="flex items-center space-x-5 group">
+            <div className="relative h-20 w-20 flex-shrink-0">
+              <Image
+                src="/images/logo.png"
+                alt="Laferla Sports Logo"
+                fill
+                className="object-contain drop-shadow-lg"
+                priority
+                sizes="80px"
+              />
+            </div>
+            <span className="text-2xl sm:text-3xl font-black uppercase tracking-widest text-text-primary group-hover:text-accent transition-colors">
+              Laferla Sports
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-all duration-200 relative ${
                   isActive(item.href)
-                    ? 'text-primary-900 border-b-2 border-primary-900'
-                    : 'text-primary-600 hover:text-primary-900'
+                    ? 'text-accent'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {item.name}
+                {isActive(item.href) && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"></span>
+                )}
               </Link>
             ))}
           </div>
@@ -51,7 +68,7 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <Link
               href="/cart"
-              className="relative p-2 text-primary-900 hover:text-primary-600 transition-colors"
+              className="relative p-2 text-text-primary hover:text-accent transition-colors"
               aria-label="Shopping cart"
             >
               <svg
@@ -77,7 +94,7 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-primary-900"
+              className="md:hidden p-2 text-text-primary hover:text-accent transition-colors"
               aria-label="Toggle menu"
             >
               <svg
@@ -108,16 +125,16 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary-200">
+          <div className="md:hidden py-4 border-t border-dark-border">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block px-3 py-2 text-base font-medium ${
+                className={`block px-3 py-3 text-base font-semibold uppercase tracking-wide transition-colors ${
                   isActive(item.href)
-                    ? 'text-primary-900 bg-primary-50'
-                    : 'text-primary-600 hover:text-primary-900 hover:bg-primary-50'
+                    ? 'text-accent bg-dark-lighter'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-dark-lighter'
                 }`}
               >
                 {item.name}
@@ -129,4 +146,5 @@ export default function Header() {
     </header>
   );
 }
+
 

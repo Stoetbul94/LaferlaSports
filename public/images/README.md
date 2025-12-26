@@ -20,3 +20,4 @@ Images should be named according to the product slugs defined in `lib/products.t
 
 If product images are not available, the site will display a placeholder. You can replace the placeholder by adding actual product images following the naming convention above.
 
+

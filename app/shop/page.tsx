@@ -1,5 +1,5 @@
-import { getAllProducts, categories } from '@/lib/products';
-import ProductCard from '@/components/ProductCard';
+import { getAllCapapieProducts, getCapapieCategories } from '@/lib/capapie-products';
+import CapapieProductCard from '@/components/CapapieProductCard';
 import Link from 'next/link';
 
 export const metadata = {
@@ -8,54 +8,60 @@ export const metadata = {
 };
 
 export default function ShopPage() {
-  const products = getAllProducts();
+  const products = getAllCapapieProducts();
+  const categories = getCapapieCategories();
 
   return (
-    <div className="section-padding bg-white">
+    <div className="section-padding bg-dark">
       <div className="container-custom">
         {/* Page Header */}
-        <div className="mb-12">
-          <h1 className="heading-1 mb-4">Shop</h1>
-          <p className="text-body max-w-3xl">
+        <div className="mb-16">
+          <h1 className="heading-1 mb-6 text-text-primary">Shop</h1>
+          <p className="text-body max-w-3xl text-lg">
             Browse our complete selection of ISSF-compliant shooting sports equipment. 
             All products are authorized Capapie dealer items, verified for competition compliance.
           </p>
         </div>
 
         {/* Category Navigation */}
-        <div className="mb-12">
-          <h2 className="heading-3 mb-6">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category) => {
-              const categoryProducts = products.filter((p) => p.category === category.id);
-              return (
-                <Link
-                  key={category.id}
-                  href={`/shop/${category.slug}`}
-                  className="bg-primary-50 hover:bg-primary-100 rounded-lg p-6 text-center transition-colors"
-                >
-                  <div className="font-semibold text-primary-900 mb-2">{category.name}</div>
-                  <div className="text-sm text-primary-600">
-                    {categoryProducts.length} {categoryProducts.length === 1 ? 'product' : 'products'}
-                  </div>
-                </Link>
-              );
-            })}
+        {categories.length > 0 && (
+          <div className="mb-16">
+            <h2 className="heading-3 mb-8 text-text-primary">Shop by Category</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {categories.map((category) => {
+                const categoryProducts = products.filter((p) => p.category.toLowerCase() === category.toLowerCase());
+                return (
+                  <Link
+                    key={category}
+                    href={`/shop/${encodeURIComponent(category.toLowerCase())}`}
+                    className="bg-dark-lighter border border-dark-border hover:border-accent rounded-lg p-6 text-center transition-all duration-200 hover:shadow-xl hover:shadow-accent/10"
+                  >
+                    <div className="font-bold text-text-primary mb-2 uppercase tracking-wide">{category}</div>
+                    <div className="text-sm text-text-secondary">
+                      {categoryProducts.length} {categoryProducts.length === 1 ? 'product' : 'products'}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* All Products */}
         <div>
-          <h2 className="heading-3 mb-6">All Products</h2>
+          <h2 className="heading-3 mb-10 text-text-primary">All Products</h2>
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <CapapieProductCard key={product.product_code} product={product} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-primary-600">No products available at this time.</p>
+            <div className="text-center py-16">
+              <p className="text-text-secondary text-lg">No products available at this time.</p>
+              <p className="text-text-muted text-sm mt-4">
+                Please populate lib/capapie-products.ts with data from Capapie.xlsx
+              </p>
             </div>
           )}
         </div>
@@ -63,4 +69,5 @@ export default function ShopPage() {
     </div>
   );
 }
+
 

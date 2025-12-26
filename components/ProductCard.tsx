@@ -10,41 +10,41 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block bg-white border border-primary-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-200"
+      className="group block bg-dark-lighter border border-dark-border rounded-lg overflow-hidden hover:border-accent transition-all duration-200 shadow-xl hover:shadow-2xl hover:shadow-accent/10"
     >
-      <div className="aspect-square relative bg-primary-50 overflow-hidden">
+      <div className="aspect-square relative bg-dark overflow-hidden">
         <Image
           src={product.images[0] || '/images/placeholder.svg'}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-200"
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {product.isssCompliant && (
-          <div className="absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-2 py-1 rounded">
+          <div className="absolute top-3 right-3 bg-accent text-white text-xs font-bold uppercase tracking-wide px-3 py-1.5 rounded">
             ISSF
           </div>
         )}
         {!product.inStock && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <span className="text-white font-semibold">Out of Stock</span>
+          <div className="absolute inset-0 bg-black/80 flex items-center justify-center backdrop-blur-sm">
+            <span className="text-white font-bold uppercase tracking-wide">Out of Stock</span>
           </div>
         )}
       </div>
       
-      <div className="p-4">
-        <div className="text-sm text-primary-500 mb-1">{product.brand}</div>
-        <h3 className="font-semibold text-primary-900 mb-2 group-hover:text-accent transition-colors line-clamp-2">
+      <div className="p-6">
+        <div className="text-xs uppercase tracking-wider text-accent mb-2 font-semibold">{product.brand}</div>
+        <h3 className="font-bold text-text-primary mb-3 group-hover:text-accent transition-colors line-clamp-2 text-lg">
           {product.name}
         </h3>
-        <p className="text-sm text-primary-600 mb-3 line-clamp-2">
+        <p className="text-sm text-text-secondary mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
-        <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-primary-900">
+        <div className="flex items-center justify-between pt-4 border-t border-dark-border">
+          <span className="text-xl font-black text-text-primary">
             R {product.price.toLocaleString()}
           </span>
-          <span className="text-xs text-primary-500">SKU: {product.sku}</span>
+          <span className="text-xs text-text-muted uppercase tracking-wide">SKU: {product.sku}</span>
         </div>
       </div>
     </Link>
