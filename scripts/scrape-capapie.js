@@ -15,6 +15,10 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const sharp = require('sharp');
+
+const MAX_IMAGE_DIM = 1000; // px (longest side)
+const WEBP_QUALITY = 82;
 
 const BASE = 'https://capapiesports.com';
 const PAGE_SIZE = 6;
@@ -206,18 +210,18 @@ function parseProduct(html, meta) {
   };
 }
 
-function extFromUrl(url) {
-  const m = url.split('?')[0].match(/\.([a-z0-9]{2,5})$/i);
-  return m ? m[1].toLowerCase() : 'png';
-}
-
+// Download an image and re-encode to optimised WebP (smaller, CDN-friendly).
 async function downloadImage(url, destPath) {
   const res = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0' },
   });
   if (!res.ok) throw new Error(`${res.status} for ${url}`);
   const buf = Buffer.from(await res.arrayBuffer());
-  fs.writeFileSync(destPath, buf);
+  await sharp(buf)
+    .rotate()
+    .resize({ width: MAX_IMAGE_DIM, height: MAX_IMAGE_DIM, fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: WEBP_QUALITY })
+    .toFile(destPath);
 }
 
 function tsEscape(value) {
@@ -366,8 +370,7 @@ async function main() {
     const localImages = [];
     for (let i = 0; i < p.images.length; i++) {
       const url = p.images[i];
-      const ext = extFromUrl(url);
-      const filename = `${p.slug}_${i + 1}.${ext}`;
+      const filename = `${p.slug}_${i + 1}.webp`;
       const dest = path.join(IMAGES_DIR, filename);
       if (fs.existsSync(dest)) {
         localImages.push(filename);

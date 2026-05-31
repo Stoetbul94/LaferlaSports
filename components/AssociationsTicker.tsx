@@ -16,10 +16,10 @@ interface Association {
 }
 
 const ASSOCIATIONS: Association[] = [
-  { name: 'South African Air Rifle Association', logo: '/images/associations/saara.png', width: 150, height: 120 },
+  { name: 'South African Air Rifle Association', logo: '/images/associations/saara.png', width: 150, height: 120, href: 'https://www.saara.org.za/' },
   { name: 'South African Target Rifle Federation', logo: '/images/associations/satrf.png', width: 150, height: 125 },
-  { name: 'SASSCO', logo: '/images/associations/sassco.png', width: 120, height: 120 },
-  { name: 'Tech Aim Targets', logo: '/images/associations/techaim.png', width: 320, height: 100 },
+  { name: 'SASCOC / Team SA', logo: '/images/associations/sassco.png', width: 120, height: 120, href: 'https://www.teamsa.co.za/' },
+  { name: 'Tech Aim Targets', logo: '/images/associations/techaim.png', width: 320, height: 100, href: 'https://www.techaim.co.za' },
 ];
 
 function Chip({ a }: { a: Association }) {

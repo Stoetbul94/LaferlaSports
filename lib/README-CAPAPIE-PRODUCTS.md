@@ -13,7 +13,7 @@ This will:
 
 - Crawl every Capapie category (paginated) for product URLs
 - Parse name, **Item Code (SKU)**, features, colour/sizing options, gallery images
-- Download all gallery images into `public/images/products/` (named `<slug>_<n>.<ext>`)
+- Download + re-encode all gallery images to optimised **WebP** (max 1000px, q82) into `public/images/products/` (named `<slug>_<n>.webp`)
 - Regenerate `lib/capapie-products.ts` and write a snapshot to `data/capapie-scrape.json`
 
 It is idempotent and skips re-downloading images that already exist. Re-run it
