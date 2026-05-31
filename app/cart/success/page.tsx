@@ -32,9 +32,9 @@ export default function OrderSuccessPage() {
                 />
               </svg>
             </div>
-            <h1 className="heading-2 mb-6 text-text-primary">Order Request Submitted</h1>
+            <h1 className="heading-2 mb-6 text-text-primary">Quote Request Sent</h1>
             <p className="text-body mb-8 text-lg leading-relaxed">
-              Thank you for your order request! We've received your enquiry and will process it shortly.
+              Thanks! We&apos;ve received your quote request and will email you pricing and availability shortly.
             </p>
           </div>
 
@@ -43,19 +43,19 @@ export default function OrderSuccessPage() {
             <ol className="space-y-4 text-text-secondary">
               <li className="flex items-start">
                 <span className="font-black text-accent mr-4 text-xl">1.</span>
-                <span className="leading-relaxed">We'll review your order request and verify product availability.</span>
+                <span className="leading-relaxed">We review your requested items and confirm availability.</span>
               </li>
               <li className="flex items-start">
                 <span className="font-black text-accent mr-4 text-xl">2.</span>
-                <span className="leading-relaxed">You'll receive an invoice via email with payment instructions.</span>
+                <span className="leading-relaxed">You receive a personalised quote by email with pricing.</span>
               </li>
               <li className="flex items-start">
                 <span className="font-black text-accent mr-4 text-xl">3.</span>
-                <span className="leading-relaxed">Complete payment via bank transfer using the details provided.</span>
+                <span className="leading-relaxed">On confirmation, we issue an invoice for payment.</span>
               </li>
               <li className="flex items-start">
                 <span className="font-black text-accent mr-4 text-xl">4.</span>
-                <span className="leading-relaxed">Once payment is confirmed, we'll arrange shipping to your address.</span>
+                <span className="leading-relaxed">Once payment clears, we arrange delivery to your address.</span>
               </li>
             </ol>
           </div>

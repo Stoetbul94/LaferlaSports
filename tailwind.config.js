@@ -39,6 +39,20 @@ module.exports = {
         wider: '0.1em',
         widest: '0.15em',
       },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'ken-burns': {
+          '0%': { transform: 'scale(1.1)' },
+          '100%': { transform: 'scale(1.22)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 28s linear infinite',
+        'ken-burns': 'ken-burns 22s ease-in-out infinite alternate',
+      },
     },
   },
   plugins: [],

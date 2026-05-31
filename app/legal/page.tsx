@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Terms & Conditions - Laferla Sports',
+  title: 'Terms & Conditions',
   description: 'Terms and conditions for Laferla Sports order requests and purchases.',
 };
 

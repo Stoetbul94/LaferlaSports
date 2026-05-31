@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'About Us - Laferla Sports',
+  title: 'About Us',
   description: 'Learn about Laferla Sports, South Africa\'s authorized Capapie dealer specializing in ISSF shooting sports equipment.',
 };
 

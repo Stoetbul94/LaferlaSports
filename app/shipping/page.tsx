@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Shipping & Order Process - Laferla Sports',
+  title: 'Shipping & Order Process',
   description: 'Learn about our order process, shipping information, and delivery options for ISSF shooting equipment in South Africa.',
 };
 

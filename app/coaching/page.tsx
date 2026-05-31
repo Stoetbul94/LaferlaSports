@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Elite Performance Coaching - Laferla Sports',
+  title: 'Elite Performance Coaching',
   description: 'ISSF Rifle Coaching for Competitive Excellence with C-Level ISSF Rifle Coach Bernard Laferla.',
 };
 

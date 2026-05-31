@@ -10,6 +10,13 @@
   html {
     @apply scroll-smooth;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-ken-burns {
+      animation: none !important;
+    }
+  }
   
   body {
     @apply bg-dark text-text-primary antialiased;

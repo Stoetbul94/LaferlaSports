@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Privacy Policy - Laferla Sports',
+  title: 'Privacy Policy',
   description: 'Privacy policy for Laferla Sports website and order requests.',
 };
 

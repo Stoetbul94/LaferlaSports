@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { getFeaturedCapapieProducts } from '@/lib/capapie-products';
 import FeaturedProductCard from '@/components/FeaturedProductCard';
+import HeroBackground from '@/components/HeroBackground';
 import { DisplayProduct } from '@/types/product-data';
 
 export default function HomePage() {
@@ -11,27 +11,8 @@ export default function HomePage() {
     <>
       {/* Hero Section */}
       <section className="relative section-padding overflow-hidden min-h-[90vh] flex items-center bg-dark">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 flex items-center justify-end pointer-events-none">
-          <div className="relative w-full h-[95%]" style={{
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}>
-            <Image
-              src="/images/MainBackground2.png"
-              alt=""
-              fill
-              className="object-cover object-right"
-              style={{
-                transform: 'scale(1.1)',
-                transformOrigin: 'right center',
-                filter: 'brightness(1.12) contrast(1.05)',
-              }}
-              priority
-              sizes="100vw"
-            />
-          </div>
-        </div>
+        {/* Background Image with parallax + slow zoom */}
+        <HeroBackground />
         
         {/* Gradient Overlay - Lighter on right, darker on left */}
         <div className="absolute inset-0 z-[1]" style={{
@@ -126,7 +107,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredProducts.map((product: DisplayProduct) => (
-                <FeaturedProductCard key={product.product_code} product={product} />
+                <FeaturedProductCard key={product.slug} product={product} />
               ))}
             </div>
             <div className="text-center mt-16">

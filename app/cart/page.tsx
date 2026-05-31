@@ -2,32 +2,30 @@
 
 import { useCartStore } from '@/lib/cart-store';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OrderRequestForm from '@/components/OrderRequestForm';
+import SafeProductImage from '@/components/SafeProductImage';
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
-  const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const [showForm, setShowForm] = useState(false);
   const router = useRouter();
-
-  const totalPrice = getTotalPrice();
 
   if (items.length === 0) {
     return (
       <div className="section-padding bg-dark">
         <div className="container-custom">
           <div className="max-w-2xl mx-auto text-center py-20">
-            <h1 className="heading-2 mb-6 text-text-primary">Your Enquiry Cart is Empty</h1>
+            <h1 className="heading-2 mb-6 text-text-primary">Your Quote Request is Empty</h1>
             <p className="text-body mb-10 text-lg">
-              Start adding products to your enquiry cart to submit an order request.
+              Add the products you&apos;re interested in, then send us a quote request. We&apos;ll
+              reply with pricing and availability.
             </p>
             <Link href="/shop" className="btn btn-primary">
-              Continue Shopping
+              Browse Products
             </Link>
           </div>
         </div>
@@ -38,53 +36,54 @@ export default function CartPage() {
   return (
     <div className="section-padding bg-dark">
       <div className="container-custom">
-        <h1 className="heading-2 mb-12 text-text-primary">Enquiry Cart</h1>
+        <h1 className="heading-2 mb-12 text-text-primary">Quote Request</h1>
 
         {!showForm ? (
           <>
-            {/* Cart Items */}
             <div className="mb-12">
               <div className="bg-dark-lighter border border-accent/30 rounded-lg p-6 mb-6">
                 <p className="text-sm text-text-secondary">
-                  <strong className="text-text-primary">Note:</strong> This is an enquiry cart. You'll submit an order request 
-                  and we'll send you an invoice via email. No payment is processed online.
+                  <strong className="text-text-primary">How it works:</strong> Add products to this
+                  list and submit your details. We&apos;ll email you a personalised quote with
+                  pricing, availability and delivery options. No payment is taken online.
                 </p>
               </div>
 
               <div className="space-y-4">
                 {items.map((item) => (
                   <div
-                    key={item.product.id}
+                    key={item.product.slug}
                     className="bg-dark-lighter border border-dark-border rounded-lg p-6 flex flex-col sm:flex-row gap-6 hover:border-accent/50 transition-colors"
                   >
                     <Link
-                      href={`/products/${item.product.slug}`}
-                      className="flex-shrink-0 w-28 h-28 relative bg-dark rounded-lg overflow-hidden border border-dark-border"
+                      href={`/shop/${item.product.slug}`}
+                      className="flex-shrink-0 w-28 h-28 relative bg-white rounded-lg overflow-hidden border border-dark-border"
                     >
-                      <Image
-                        src={item.product.images[0] || '/images/placeholder.svg'}
+                      <SafeProductImage
+                        src={item.product.image_path}
                         alt={item.product.name}
                         fill
-                        className="object-cover"
+                        className="object-contain"
+                        sizes="112px"
                       />
                     </Link>
-                    
+
                     <div className="flex-grow">
                       <Link
-                        href={`/products/${item.product.slug}`}
+                        href={`/shop/${item.product.slug}`}
                         className="font-bold text-lg text-text-primary hover:text-accent transition-colors block mb-2"
                       >
                         {item.product.name}
                       </Link>
                       <div className="text-sm text-text-secondary uppercase tracking-wide">
-                        SKU: {item.product.sku} | R {item.product.price.toLocaleString()} each
+                        {item.product.category} · SKU: {item.product.product_code}
                       </div>
                     </div>
 
                     <div className="flex items-center gap-6">
                       <div className="flex items-center border border-dark-border rounded bg-dark">
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
                           className="px-4 py-2 text-text-primary hover:text-accent hover:bg-dark-lighter transition-colors"
                           aria-label="Decrease quantity"
                         >
@@ -94,7 +93,7 @@ export default function CartPage() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
                           className="px-4 py-2 text-text-primary hover:text-accent hover:bg-dark-lighter transition-colors"
                           aria-label="Increase quantity"
                         >
@@ -102,14 +101,8 @@ export default function CartPage() {
                         </button>
                       </div>
 
-                      <div className="text-right min-w-[120px]">
-                        <div className="font-black text-xl text-text-primary">
-                          R {(item.product.price * item.quantity).toLocaleString()}
-                        </div>
-                      </div>
-
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(item.product.slug)}
                         className="p-2 text-text-secondary hover:text-accent transition-colors"
                         aria-label="Remove item"
                       >
@@ -123,33 +116,26 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Cart Summary */}
             <div className="border-t border-dark-border pt-10">
               <div className="max-w-md ml-auto space-y-6">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-bold text-lg text-text-primary uppercase tracking-wide">Total</span>
-                  <span className="font-black text-4xl text-text-primary">R {totalPrice.toLocaleString()}</span>
-                </div>
-                
                 <div className="bg-dark-lighter border border-dark-border rounded-lg p-6">
-                  <p className="mb-4 font-bold text-text-primary uppercase tracking-wide text-sm"><strong>Order Process:</strong></p>
+                  <p className="mb-4 font-bold text-text-primary uppercase tracking-wide text-sm">
+                    What happens next?
+                  </p>
                   <ol className="list-decimal list-inside space-y-2 text-text-secondary text-sm">
-                    <li>Submit your order request</li>
-                    <li>We'll review and send you an invoice</li>
-                    <li>Complete payment via bank transfer</li>
-                    <li>We'll arrange shipping</li>
+                    <li>Submit your quote request</li>
+                    <li>We reply by email with pricing &amp; availability</li>
+                    <li>You confirm and we issue an invoice</li>
+                    <li>We arrange delivery on payment</li>
                   </ol>
                 </div>
 
                 <div className="flex gap-4">
                   <Link href="/shop" className="btn btn-secondary flex-1">
-                    Continue Shopping
+                    Continue Browsing
                   </Link>
-                  <button
-                    onClick={() => setShowForm(true)}
-                    className="btn btn-primary flex-1"
-                  >
-                    Submit Order Request
+                  <button onClick={() => setShowForm(true)} className="btn btn-primary flex-1">
+                    Request Quote
                   </button>
                 </div>
               </div>
@@ -158,15 +144,11 @@ export default function CartPage() {
         ) : (
           <OrderRequestForm
             items={items}
-            totalPrice={totalPrice}
             onCancel={() => setShowForm(false)}
-            onSuccess={() => {
-              router.push('/cart/success');
-            }}
+            onSuccess={() => router.push('/cart/success')}
           />
         )}
       </div>
     </div>
   );
 }
-

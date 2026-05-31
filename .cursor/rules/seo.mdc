@@ -1,0 +1,42 @@
+---
+description: SEO conventions for Laferla Sports (pages, products, images)
+globs: app/**/*.tsx
+alwaysApply: false
+---
+
+# SEO Conventions
+
+Laferla Sports targets "ISSF / Capapie shooting equipment, South Africa". Every
+page and product must reinforce that. Source of truth: `lib/seo.ts`.
+
+## Every page MUST export `metadata` (or `generateMetadata`)
+
+- `title`: unique, keyword-led. The layout adds the `| Laferla Sports` suffix via template — do NOT repeat the brand.
+- `description`: 120–160 chars, includes a target phrase ("ISSF", "Capapie", "South Africa") where natural.
+- `alternates.canonical`: set the canonical path (e.g. `/shop/<slug>`).
+- Add `openGraph` for product/landing pages (title, description, image).
+
+```tsx
+export const metadata: Metadata = {
+  title: 'Shooting Jackets & Trousers', // -> "Shooting Jackets & Trousers | Laferla Sports"
+  description: 'ISSF-compliant Capapie shooting jackets & trousers, in South Africa. Request a quote.',
+  alternates: { canonical: '/shop/jackets-and-trousers' },
+};
+```
+
+## Products MUST render structured data
+
+Use `<ProductJsonLd product={product} />` on product pages. Pricing is
+quote-based, so `Product` schema uses ZAR with a quote offer — never invent prices.
+
+## Images
+
+- Every `<Image>`/`SafeProductImage` needs a descriptive `alt` (product name + context). Never `alt=""` on meaningful images.
+
+## New routes
+
+- Any new public route must be added to `app/sitemap.ts`. Product/category routes are already generated from `lib/capapie-products.ts`.
+
+## Locale
+
+- The site is `en-ZA`. Use South African English spelling (authorised, colour, programme) in copy.

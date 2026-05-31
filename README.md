@@ -39,8 +39,11 @@ ORDER_EMAIL=orders@laferlasports.co.za
 
 **Note:** For development, email sending may fail if SMTP is not configured. The site will still function, but order request emails won't be sent. In production, ensure SMTP credentials are properly configured.
 
-3. Add product images:
-Place product images in `public/images/products/` directory. Images should be named according to the product slugs defined in `lib/products.ts` (e.g., `capapie-pistol-01-1.jpg`).
+3. Populate / refresh products (scrapes capapiesports.com, downloads images, regenerates data):
+```bash
+pnpm scrape-products
+```
+See `lib/README-CAPAPIE-PRODUCTS.md` for details. Products are quote-based (no prices).
 
 4. Run the development server:
 ```bash

@@ -1,87 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendOrderRequestEmail } from '@/lib/email';
-import { OrderRequest } from '@/types';
+import { sendQuoteRequestEmail, QuoteRequestPayload } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    // Validate required fields
-    const requiredFields = [
-      'customerName',
-      'email',
-      'phone',
-      'address',
-      'city',
-      'province',
-      'postalCode',
-      'items',
-    ];
 
+    const requiredFields = ['customerName', 'email', 'phone', 'items'];
     for (const field of requiredFields) {
       if (!body[field]) {
-        return NextResponse.json(
-          { error: `Missing required field: ${field}` },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: `Missing required field: ${field}` }, { status: 400 });
       }
     }
 
-    // Validate items array
     if (!Array.isArray(body.items) || body.items.length === 0) {
-      return NextResponse.json(
-        { error: 'Order must contain at least one item' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Quote request must contain at least one item' }, { status: 400 });
     }
 
-    // Construct order request object
-    const orderRequest: OrderRequest = {
-      customerName: body.customerName,
-      email: body.email,
-      phone: body.phone,
-      address: body.address,
-      city: body.city,
-      province: body.province,
-      postalCode: body.postalCode,
-      items: body.items,
-      notes: body.notes || undefined,
+    const quoteRequest: QuoteRequestPayload = {
+      customerName: String(body.customerName),
+      email: String(body.email),
+      phone: String(body.phone),
+      notes: body.notes ? String(body.notes) : undefined,
+      items: body.items.map((item: Record<string, unknown>) => ({
+        product_code: String(item.product_code ?? ''),
+        name: String(item.name ?? ''),
+        category: String(item.category ?? ''),
+        quantity: Number(item.quantity ?? 1),
+        product_link: item.product_link ? String(item.product_link) : undefined,
+      })),
     };
 
-    // Send email notification
-    // In development, this might fail if SMTP is not configured
-    // We'll handle this gracefully
     try {
-      await sendOrderRequestEmail(orderRequest);
+      await sendQuoteRequestEmail(quoteRequest);
     } catch (emailError) {
-      // Log error but don't fail the request
-      // In production, you might want to queue this or use a service
-      console.error('Failed to send order email:', emailError);
-      
-      // In development, we'll still return success
-      // In production, you might want to return a warning or queue the email
+      console.error('Failed to send quote email:', emailError);
       if (process.env.NODE_ENV === 'production') {
         return NextResponse.json(
-          { error: 'Failed to process order request. Please try again or contact us directly.' },
+          { error: 'Failed to process quote request. Please try again or contact us directly.' },
           { status: 500 }
         );
       }
     }
 
     return NextResponse.json(
-      { 
-        success: true,
-        message: 'Order request submitted successfully. We will send you an invoice via email.',
-      },
+      { success: true, message: 'Quote request submitted successfully. We will email you a quote shortly.' },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error processing order request:', error);
+    console.error('Error processing quote request:', error);
     return NextResponse.json(
-      { error: 'An error occurred processing your order request. Please try again.' },
+      { error: 'An error occurred processing your quote request. Please try again.' },
       { status: 500 }
     );
   }
 }
-
-

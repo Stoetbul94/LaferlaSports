@@ -9,7 +9,7 @@ interface FeaturedProductCardProps {
 export default function FeaturedProductCard({ product }: FeaturedProductCardProps) {
   return (
     <Link
-      href={`/shop/${product.product_code}`}
+      href={`/shop/${product.slug}`}
       className="group relative block bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transition-all duration-500 cursor-pointer"
       style={{
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2)',
@@ -27,7 +27,7 @@ export default function FeaturedProductCard({ product }: FeaturedProductCardProp
       </div>
 
       {/* Image Container */}
-      <div className="aspect-square relative bg-dark overflow-hidden">
+      <div className="aspect-square relative bg-white overflow-hidden">
         <SafeProductImage
           src={product.image_path || '/images/products/placeholder.png'}
           alt={product.name}

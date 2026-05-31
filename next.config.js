@@ -1,17 +1,15 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    remotePatterns: [{ protocol: 'https', hostname: '**' }],
   },
-  // App Router is default in Next.js 16, no experimental flag needed
-  // Next.js 16 handles PostCSS automatically - no webpack override needed
-}
+  // Pin the workspace root (multiple lockfiles exist on this machine).
+  turbopack: {
+    root: __dirname,
+  },
+  outputFileTracingRoot: path.join(__dirname),
+};
 
-module.exports = nextConfig
-
+module.exports = nextConfig;

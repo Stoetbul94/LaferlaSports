@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { categoryToSlug } from '@/lib/category-slug';
 
 export const metadata = {
-  title: 'Shop - Laferla Sports | ISSF Shooting Equipment',
+  title: 'Shop ISSF Shooting Equipment',
   description: 'Browse our complete catalog of ISSF-compliant shooting sports equipment including pistols, rifles, shotguns, and accessories.',
 };
 
@@ -69,7 +69,7 @@ export default function ShopPage() {
           {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (
-                <CapapieProductCard key={product.product_code} product={product} />
+                <CapapieProductCard key={product.slug} product={product} />
               ))}
             </div>
           ) : (

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Capapie Brand - Laferla Sports',
+  title: 'Capapie Brand',
   description: 'Learn about Capapie, the premier manufacturer of ISSF competition shooting equipment. Official authorized dealer in South Africa.',
 };
 

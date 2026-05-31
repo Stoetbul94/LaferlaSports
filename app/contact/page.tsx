@@ -33,13 +33,17 @@ export default function ContactPage() {
     setSubmitStatus('idle');
 
     try {
-      // In a real application, this would send to an API endpoint
-      // For now, we'll simulate a submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // In production, you would call an API endpoint here
-      // const response = await fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) });
-      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+
       setSubmitStatus('success');
       reset();
     } catch (error) {

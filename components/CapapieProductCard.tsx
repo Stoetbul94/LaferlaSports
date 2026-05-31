@@ -9,10 +9,10 @@ interface CapapieProductCardProps {
 export default function CapapieProductCard({ product }: CapapieProductCardProps) {
   return (
     <Link
-      href={`/shop/${product.product_code}`}
+      href={`/shop/${product.slug}`}
       className="group block bg-dark-lighter border border-dark-border rounded-lg overflow-hidden hover:border-accent transition-all duration-200 shadow-xl hover:shadow-2xl hover:shadow-accent/10 cursor-pointer"
     >
-      <div className="aspect-square relative bg-dark overflow-hidden">
+      <div className="aspect-square relative bg-white overflow-hidden">
         <SafeProductImage
           src={product.image_path || '/images/products/placeholder.png'}
           alt={product.name}
