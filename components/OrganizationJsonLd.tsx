@@ -10,10 +10,19 @@ export default function OrganizationJsonLd() {
     logo: ORG.logo,
     image: ORG.logo,
     email: ORG.email,
+    telephone: ORG.telephone,
     description: SITE_DESCRIPTION,
     areaServed: { '@type': 'Country', name: 'South Africa' },
     address: { '@type': 'PostalAddress', addressCountry: 'ZA' },
     brand: { '@type': 'Brand', name: 'Capapie' },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: ORG.telephone,
+      email: ORG.email,
+      contactType: 'sales',
+      areaServed: 'ZA',
+      availableLanguage: ['en'],
+    },
     sameAs: ORG.sameAs,
   };
 

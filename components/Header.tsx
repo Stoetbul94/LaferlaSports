@@ -22,6 +22,7 @@ export default function Header() {
     { name: 'About', href: '/about' },
     { name: 'Capapie', href: '/capapie' },
     { name: 'Shipping', href: '/shipping' },
+    { name: 'FAQ', href: '/faq' },
     { name: 'Contact', href: '/contact' },
   ];
 

@@ -15,6 +15,7 @@ export const ORG = {
   url: SITE_URL,
   logo: `${SITE_URL}/images/logo.png`,
   email: 'info@laferlasports.co.za',
+  telephone: '+27834573392',
   country: 'ZA',
   sameAs: [] as string[],
 };

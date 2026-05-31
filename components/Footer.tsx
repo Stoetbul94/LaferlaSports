@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Logo from './Logo';
+import { PHONE_DISPLAY, whatsappUrl } from '@/lib/contact-info';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -56,6 +57,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/faq" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
+                  FAQ
+                </Link>
+              </li>
+              <li>
                 <Link href="/shipping" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
                   Order Process
                 </Link>
@@ -81,6 +87,16 @@ export default function Footer() {
               <li>
                 <a href="mailto:info@laferlasports.co.za" className="hover:text-accent transition-colors">
                   info@laferlasports.co.za
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors"
+                >
+                  WhatsApp: {PHONE_DISPLAY}
                 </a>
               </li>
             </ul>

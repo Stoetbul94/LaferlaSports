@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/seo';
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticRoutes = ['', '/shop', '/coaching', '/about', '/capapie', '/shipping', '/contact', '/legal', '/privacy'].map(
+  const staticRoutes = ['', '/shop', '/coaching', '/about', '/capapie', '/shipping', '/faq', '/contact', '/legal', '/privacy'].map(
     (route) => ({
       url: `${SITE_URL}${route}`,
       lastModified: now,

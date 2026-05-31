@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AssociationsTicker from '@/components/AssociationsTicker';
 import OrganizationJsonLd from '@/components/OrganizationJsonLd';
+import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AssociationsTicker />
           <Footer />
         </div>
+        <WhatsAppFloat />
       </body>
     </html>
   );

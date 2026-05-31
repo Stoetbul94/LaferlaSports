@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import CoachingEnquiryForm from '@/components/CoachingEnquiryForm';
 
 export const metadata = {
   title: 'Elite Performance Coaching',
@@ -174,22 +174,19 @@ export default function CoachingPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="section-padding bg-dark">
+      {/* Enquiry / Booking */}
+      <section className="section-padding bg-dark" id="enquire">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center px-4 sm:px-0">
-            <h2 className="heading-2 mb-4 sm:mb-6 text-text-primary">Begin Your Training</h2>
-            <p className="text-body mb-6 sm:mb-10 text-base sm:text-lg leading-relaxed">
-              Contact us to discuss coaching availability and training programs tailored to your 
-              competitive goals.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Link href="/contact" className="btn btn-primary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
-                Book Coaching
-              </Link>
-              <Link href="/contact" className="btn btn-secondary text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4">
-                Contact for Availability
-              </Link>
+          <div className="max-w-3xl mx-auto px-4 sm:px-0">
+            <div className="mb-8 sm:mb-10 text-center">
+              <h2 className="heading-2 mb-4 sm:mb-6 text-text-primary">Begin Your Training</h2>
+              <p className="text-body text-base sm:text-lg leading-relaxed">
+                Tell us about your shooting and goals and Bernard will be in touch to discuss
+                availability and a programme tailored to you.
+              </p>
+            </div>
+            <div className="bg-dark-lighter border border-dark-border rounded-lg p-6 sm:p-8">
+              <CoachingEnquiryForm />
             </div>
           </div>
         </div>
