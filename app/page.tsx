@@ -1,9 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import type { Metadata } from 'next';
 import { getFeaturedCapapieProducts } from '@/lib/capapie-products';
 import FeaturedProductCard from '@/components/FeaturedProductCard';
 import HeroBackground from '@/components/HeroBackground';
 import { DisplayProduct } from '@/types/product-data';
+import { SITE_DESCRIPTION, SITE_NAME } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  title: { absolute: `${SITE_NAME} | Competition Shooting Equipment & Coaching | South Africa` },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+};
 
 export default function HomePage() {
   const featuredProducts = getFeaturedCapapieProducts();
@@ -30,7 +38,8 @@ export default function HomePage() {
                   UNRIVALED PRECISION.
                 </h1>
                 <p className="text-lg md:text-xl text-text-secondary mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                  Professional precision shooting equipment and coaching for competitive excellence.
+                  Competition shooting equipment and coaching in South Africa — Capapie ISSF
+                  apparel and Trap &amp; Skeet shotgun gear, plus ISSF rifle coaching.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                   <Link href="/shop" className="btn btn-primary">
@@ -59,9 +68,10 @@ export default function HomePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="heading-3 mb-4 text-text-primary">ISSF Compliant</h3>
+              <h3 className="heading-3 mb-4 text-text-primary">Competition Focused</h3>
               <p className="text-text-secondary">
-                All products meet International Shooting Sport Federation standards and regulations.
+                Equipment designed for competitive ISSF rifle and pistol shooting, and for Trap
+                and Skeet. Ask us if you need a garment checked against current equipment rules.
               </p>
             </div>
             
@@ -135,7 +145,7 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <Link
-              href="/shop#precision"
+              href="/shop/issf"
               className="group relative isolate flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-lg border border-dark-border p-8 transition-colors hover:border-accent"
             >
               <Image
@@ -151,11 +161,11 @@ export default function HomePage() {
               </p>
               <h3 className="heading-3 mb-3 text-text-primary">Rifle &amp; Pistol Equipment</h3>
               <p className="mb-5 leading-relaxed text-text-secondary">
-                Shooting jackets, trousers, gloves, shoes and accessories built to ISSF
-                competition standards.
+                Shooting jackets, trousers, gloves, shoes and accessories designed for
+                ISSF competition disciplines.
               </p>
               <span className="text-sm font-semibold uppercase tracking-wide text-accent group-hover:underline">
-                Shop Precision Equipment →
+                Shop ISSF Equipment →
               </span>
             </Link>
 
@@ -184,6 +194,27 @@ export default function HomePage() {
               </span>
             </Link>
           </div>
+
+          <nav
+            className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold uppercase tracking-wide"
+            aria-label="Primary collections"
+          >
+            <Link href="/shop/issf" className="text-text-secondary hover:text-accent">
+              ISSF Equipment
+            </Link>
+            <Link href="/shop/shotgun" className="text-text-secondary hover:text-accent">
+              Trap &amp; Skeet Equipment
+            </Link>
+            <Link href="/capapie" className="text-text-secondary hover:text-accent">
+              Capapie
+            </Link>
+            <Link href="/shop" className="text-text-secondary hover:text-accent">
+              Shop All
+            </Link>
+            <Link href="/coaching" className="text-text-secondary hover:text-accent">
+              Coaching
+            </Link>
+          </nav>
         </div>
       </section>
 
@@ -224,12 +255,17 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="bg-dark border-2 border-accent rounded-lg p-12 text-center">
-                <div className="text-6xl font-black text-accent mb-4 uppercase tracking-widest">ISSF</div>
-                <div className="text-text-primary font-bold uppercase tracking-wide mb-6 text-lg">Compliant Equipment</div>
-                <p className="text-text-secondary leading-relaxed">
-                  All products are verified for ISSF competition compliance and meet 
-                  international standards for competitive shooting sports.
+                <div className="text-5xl font-black text-accent mb-4 uppercase tracking-widest">Capapie</div>
+                <div className="text-text-primary font-bold uppercase tracking-wide mb-6 text-lg">
+                  Authorised South African Dealer
+                </div>
+                <p className="mb-8 leading-relaxed text-text-secondary">
+                  ISSF rifle and pistol apparel, Trap &amp; Skeet shooting vests and
+                  accessories, with made-to-measure options and local quotation support.
                 </p>
+                <Link href="/capapie" className="btn btn-secondary">
+                  About Capapie
+                </Link>
               </div>
             </div>
           </div>
@@ -242,8 +278,8 @@ export default function HomePage() {
         <div className="container-custom text-center relative z-10">
           <h2 className="heading-2 mb-8 text-text-primary">Ready to Elevate Your Shooting?</h2>
           <p className="text-lg text-text-secondary mb-12 max-w-2xl mx-auto leading-relaxed">
-            Browse our complete catalog of ISSF-compliant equipment and submit an order request. 
-            Our team will prepare your invoice and arrange delivery.
+            Browse the ISSF and Trap &amp; Skeet catalogues and submit a quote request.
+            We will email pricing, sizing guidance and delivery details.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link href="/shop" className="btn btn-primary">

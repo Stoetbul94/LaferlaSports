@@ -16,7 +16,7 @@ export default function Footer() {
               <h3 className="text-xl font-bold uppercase tracking-wide text-text-primary">Laferla Sports</h3>
             </div>
             <p className="text-text-secondary text-sm mb-4 leading-relaxed">
-              Official Capapie dealer in South Africa. Specializing in ISSF shooting sports equipment for competitive shooters.
+              Official Capapie dealer in South Africa. ISSF precision equipment, Trap &amp; Skeet shotgun gear, and ISSF rifle coaching.
             </p>
           </div>
 
@@ -27,6 +27,21 @@ export default function Footer() {
               <li>
                 <Link href="/shop" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
                   Shop
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/issf" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
+                  ISSF Equipment
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop/shotgun" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
+                  Trap &amp; Skeet
+                </Link>
+              </li>
+              <li>
+                <Link href="/coaching" className="text-text-secondary hover:text-accent transition-colors uppercase tracking-wide">
+                  Coaching
                 </Link>
               </li>
               <li>

@@ -9,7 +9,6 @@ import { EnquiryItem } from '@/types/product-data';
 const quoteRequestSchema = z.object({
   customerName: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
   notes: z.string().optional(),
 });
 
@@ -49,6 +48,7 @@ export default function OrderRequestForm({ items, onCancel, onSuccess }: OrderRe
             category: item.product.category,
             quantity: item.quantity,
             product_link: item.product.product_link,
+            page_url: `/shop/${item.product.slug}`,
           })),
         }),
       });
@@ -128,19 +128,6 @@ export default function OrderRequestForm({ items, onCancel, onSuccess }: OrderRe
             />
             {errors.email && <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>}
           </div>
-        </div>
-
-        <div>
-          <label htmlFor="phone" className="block text-sm font-bold text-text-primary mb-3 uppercase tracking-wide">
-            Phone Number *
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            {...register('phone')}
-            className="w-full px-4 py-3 bg-dark-lighter border border-dark-border rounded text-text-primary focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
-          />
-          {errors.phone && <p className="mt-2 text-sm text-red-400">{errors.phone.message}</p>}
         </div>
 
         <div>

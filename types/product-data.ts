@@ -62,7 +62,6 @@ export interface EnquiryItem {
 export interface QuoteRequest {
   customerName: string;
   email: string;
-  phone: string;
   notes?: string;
   items: EnquiryItem[];
 }

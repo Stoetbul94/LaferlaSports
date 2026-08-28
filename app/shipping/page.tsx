@@ -1,6 +1,7 @@
 export const metadata = {
   title: 'Shipping & Order Process',
-  description: 'Learn about our order process, shipping information, and delivery options for ISSF shooting equipment in South Africa.',
+  description: 'How to request a quote, pay, and receive Capapie ISSF and Trap & Skeet equipment from Laferla Sports in South Africa.',
+  alternates: { canonical: '/shipping' },
 };
 
 export default function ShippingPage() {

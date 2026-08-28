@@ -3,7 +3,9 @@ import CoachingEnquiryForm from '@/components/CoachingEnquiryForm';
 
 export const metadata = {
   title: 'Elite Performance Coaching',
-  description: 'ISSF Rifle Coaching for Competitive Excellence with C-Level ISSF Rifle Coach Bernard Laferla.',
+  description:
+    'ISSF rifle coaching in South Africa with C-Level ISSF Rifle Coach Bernard Laferla — competitive excellence from club through national level.',
+  alternates: { canonical: '/coaching' },
 };
 
 export default function CoachingPage() {

@@ -1,6 +1,7 @@
 export const metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy policy for Laferla Sports website and order requests.',
+  description: 'How Laferla Sports collects and uses personal information from quote requests and contact forms.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {

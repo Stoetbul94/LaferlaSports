@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/lib/cart-store';
 import { useEffect, useRef, useState } from 'react';
 import { SHOTGUN_CATEGORIES } from '@/lib/shotgun-categories';
+import { PRECISION_CATEGORIES } from '@/lib/precision-categories';
+import { categoryToSlug } from '@/lib/category-slug';
 import { useHydrated } from '@/lib/use-hydrated';
 
 interface NavChild {
@@ -65,7 +67,7 @@ export default function Header() {
         { name: 'Shop All', href: '/shop', description: 'Both shooting disciplines' },
         {
           name: 'Precision / ISSF',
-          href: '/shop#precision',
+          href: '/shop/issf',
           description: 'Rifle & pistol equipment',
         },
         {
@@ -155,21 +157,40 @@ export default function Header() {
                           )}
                         </Link>
                       ))}
-                      <div className="bg-dark px-5 py-4">
-                        <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
-                          Trap &amp; Skeet
-                        </span>
-                        <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {SHOTGUN_CATEGORIES.map((category) => (
-                            <Link
-                              key={category.slug}
-                              href={`/shop/shotgun/${category.slug}`}
-                              onClick={closeMenus}
-                              className="text-xs text-text-secondary hover:text-accent"
-                            >
-                              {category.shortName}
-                            </Link>
-                          ))}
+                      <div className="space-y-3 bg-dark px-5 py-4">
+                        <div>
+                          <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
+                            ISSF / Precision
+                          </span>
+                          <div className="flex flex-wrap gap-x-3 gap-y-1">
+                            {PRECISION_CATEGORIES.map((category) => (
+                              <Link
+                                key={category.name}
+                                href={`/shop/${categoryToSlug(category.name)}`}
+                                onClick={closeMenus}
+                                className="text-xs text-text-secondary hover:text-accent"
+                              >
+                                {category.name}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">
+                            Trap &amp; Skeet
+                          </span>
+                          <div className="flex flex-wrap gap-x-3 gap-y-1">
+                            {SHOTGUN_CATEGORIES.map((category) => (
+                              <Link
+                                key={category.slug}
+                                href={`/shop/shotgun/${category.slug}`}
+                                onClick={closeMenus}
+                                className="text-xs text-text-secondary hover:text-accent"
+                              >
+                                {category.shortName}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -286,6 +307,16 @@ export default function Header() {
                           {child.name}
                         </Link>
                       ))}
+                    {PRECISION_CATEGORIES.map((category) => (
+                      <Link
+                        key={category.name}
+                        href={`/shop/${categoryToSlug(category.name)}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 pl-4 text-sm text-text-muted hover:text-accent"
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
                     {SHOTGUN_CATEGORIES.map((category) => (
                       <Link
                         key={category.slug}

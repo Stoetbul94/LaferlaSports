@@ -22,11 +22,18 @@ interface Association {
 }
 
 const ASSOCIATIONS: Association[] = [
-  { name: 'South African Air Rifle Association', logo: '/images/associations/saara.png', width: 150, height: 120, href: 'https://www.saara.org.za/' },
   { name: 'South African Target Rifle Federation', logo: '/images/associations/satrf.png', width: 150, height: 125 },
-  { name: 'Team South Africa', logo: '/images/associations/teamsa.png', width: 145, height: 126, href: 'https://www.teamsa.co.za/' },
   { name: 'Tech Aim Targets', logo: '/images/associations/techaim.png', width: 320, height: 100, href: 'https://www.techaim.co.za' },
 ];
+
+const CARD_WIDTH = 210;
+
+// The track wraps by one full set, so it must stay wider than the viewport or a
+// gap appears mid-scroll. Repeat enough times to cover the widest container
+// (max-w-6xl, 1152px) twice over, whatever the number of associations.
+const REPEATS = Math.max(2, Math.ceil(2304 / (ASSOCIATIONS.length * CARD_WIDTH)));
+
+const TRACK = Array.from({ length: REPEATS }, () => ASSOCIATIONS).flat();
 
 function Chip({ a, eager }: { a: Association; eager: boolean }) {
   const inner = (
@@ -159,7 +166,7 @@ export default function AssociationsTicker() {
           onMouseLeave={() => (pausedRef.current = false)}
         >
           <div ref={trackRef} className="flex will-change-transform">
-            {[...ASSOCIATIONS, ...ASSOCIATIONS].map((a, i) => (
+            {TRACK.map((a, i) => (
               <div
                 key={`${a.name}-${i}`}
                 className="w-[210px] shrink-0 px-4"

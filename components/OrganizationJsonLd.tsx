@@ -12,16 +12,14 @@ export default function OrganizationJsonLd() {
     email: ORG.email,
     description: SITE_DESCRIPTION,
     areaServed: { '@type': 'Country', name: 'South Africa' },
-    address: { '@type': 'PostalAddress', addressCountry: 'ZA' },
     brand: { '@type': 'Brand', name: 'Capapie' },
     contactPoint: {
       '@type': 'ContactPoint',
       email: ORG.email,
-      contactType: 'sales',
+      contactType: 'customer support',
       areaServed: 'ZA',
       availableLanguage: ['en'],
     },
-    sameAs: ORG.sameAs,
   };
 
   const websiteLd = {
@@ -29,11 +27,6 @@ export default function OrganizationJsonLd() {
     '@type': 'WebSite',
     name: ORG.name,
     url: SITE_URL,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/shop?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
   };
 
   return (

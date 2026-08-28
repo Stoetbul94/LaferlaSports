@@ -4,12 +4,21 @@
  */
 export const CONTACT_EMAIL = 'info@laferlasports.com';
 
-/** Builds a mailto link with an optional pre-filled subject and body. */
+/**
+ * Builds a mailto link with an optional pre-filled subject and body.
+ *
+ * Uses encodeURIComponent rather than URLSearchParams: the latter encodes spaces
+ * as "+", which mail clients render literally in a mailto query rather than
+ * decoding back to a space (RFC 6068 expects percent-encoding).
+ */
 export function mailtoUrl(subject?: string, body?: string): string {
-  const params = new URLSearchParams();
-  if (subject) params.set('subject', subject);
-  if (body) params.set('body', body);
-  const query = params.toString();
+  const query = [
+    subject ? `subject=${encodeURIComponent(subject)}` : '',
+    body ? `body=${encodeURIComponent(body)}` : '',
+  ]
+    .filter(Boolean)
+    .join('&');
+
   return `mailto:${CONTACT_EMAIL}${query ? `?${query}` : ''}`;
 }
 

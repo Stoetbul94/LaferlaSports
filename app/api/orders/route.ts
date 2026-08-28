@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendQuoteRequestEmail, QuoteRequestPayload } from '@/lib/email';
+import { absoluteUrl } from '@/lib/seo';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const requiredFields = ['customerName', 'email', 'phone', 'items'];
+    const requiredFields = ['customerName', 'email', 'items'];
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json({ error: `Missing required field: ${field}` }, { status: 400 });
@@ -19,14 +20,14 @@ export async function POST(request: NextRequest) {
     const quoteRequest: QuoteRequestPayload = {
       customerName: String(body.customerName),
       email: String(body.email),
-      phone: String(body.phone),
       notes: body.notes ? String(body.notes) : undefined,
       items: body.items.map((item: Record<string, unknown>) => ({
-        product_code: String(item.product_code ?? ''),
+        product_code: item.product_code ? String(item.product_code) : undefined,
         name: String(item.name ?? ''),
         category: String(item.category ?? ''),
         quantity: Number(item.quantity ?? 1),
         product_link: item.product_link ? String(item.product_link) : undefined,
+        page_url: item.page_url ? absoluteUrl(String(item.page_url)) : undefined,
       })),
     };
 

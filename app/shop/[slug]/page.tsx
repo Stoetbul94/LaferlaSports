@@ -15,13 +15,37 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import VestMaterialTable from '@/components/VestMaterialTable';
 import Link from 'next/link';
 import { categoryToSlug, slugToCategory } from '@/lib/category-slug';
-import { productBreadcrumbs, SHOTGUN_COLLECTION_PATH } from '@/lib/breadcrumbs';
+import {
+  ISSF_COLLECTION_PATH,
+  productBreadcrumbs,
+  SHOTGUN_COLLECTION_PATH,
+} from '@/lib/breadcrumbs';
 import { shotgunCategorySlugForName } from '@/lib/shotgun-categories';
+import { precisionCategoryMeta } from '@/lib/precision-categories';
 import { productMailtoUrl } from '@/lib/contact-info';
 import { absoluteUrl } from '@/lib/seo';
+import { DisplayProduct } from '@/types/product-data';
 
 interface ShopDynamicPageProps {
   params: Promise<{ slug: string }>;
+}
+
+/** Precision categories whose products are governed by ISSF equipment rules. */
+const ISSF_REGULATED_CATEGORIES = new Set(['Jackets & Trousers', 'Gloves', 'Shoes', 'Inners']);
+
+/**
+ * Short trust line under the enquiry buttons.
+ *
+ * Deliberately omitted for precision bags and accessories: most are not
+ * governed by ISSF equipment rules, and a blanket compliance claim across
+ * keychains, lapel pins and kit bags would be inaccurate.
+ */
+function disciplineTrustNote(product: DisplayProduct): string | null {
+  if (product.discipline === 'shotgun') return 'Built for competitive Trap & Skeet shooting';
+  if (ISSF_REGULATED_CATEGORIES.has(product.category)) {
+    return 'Designed for ISSF competition disciplines';
+  }
+  return null;
 }
 
 export async function generateStaticParams() {
@@ -64,10 +88,16 @@ export async function generateMetadata({ params }: ShopDynamicPageProps) {
 
   const categoryName = slugToCategory(slug, getPrecisionCategories());
   if (categoryName) {
+    const meta = precisionCategoryMeta(categoryName);
+    const description =
+      meta?.metaDescription ||
+      `Browse ${categoryName} from Capapie at Laferla Sports, South Africa's authorised ISSF shooting equipment dealer.`;
+
     return {
-      title: categoryName,
-      description: `Browse ${categoryName} from Capapie at Laferla Sports, South Africa's authorised ISSF shooting equipment dealer.`,
+      title: meta?.metaTitle || categoryName,
+      description,
       alternates: { canonical: `/shop/${categoryToSlug(categoryName)}` },
+      openGraph: { title: meta?.heading || categoryName, description, type: 'website' },
     };
   }
 
@@ -92,6 +122,7 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
       ? `${SHOTGUN_COLLECTION_PATH}/${categorySlug}`
       : `/shop/${categorySlug}`;
     const related = getRelatedProducts(product);
+    const disciplineNote = disciplineTrustNote(product);
 
     return (
       <div className="section-padding bg-dark">
@@ -215,10 +246,8 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
 
               <div className="text-sm text-text-secondary space-y-3 pt-8 border-t border-dark-border">
                 <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Official Capapie Authorised Dealer</p>
-                {isShotgun ? (
-                  <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Built for competitive Trap &amp; Skeet shooting</p>
-                ) : (
-                  <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>ISSF Competition Compliant</p>
+                {disciplineNote && (
+                  <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>{disciplineNote}</p>
                 )}
                 <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Professional Support Available</p>
               </div>
@@ -231,27 +260,31 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
             </div>
           )}
 
-          {isShotgun && (
-            <div className="mt-16 rounded-lg border border-dark-border bg-dark-lighter p-8">
-              <h2 className="heading-3 mb-3 text-text-primary">
-                Part of the Capapie Trap &amp; Skeet range
-              </h2>
-              <p className="text-text-secondary mb-6 leading-relaxed">
-                Browse the full shotgun collection — competition vests, inners, bags,
-                shell carriers, gun covers and accessories supplied across South Africa.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href={SHOTGUN_COLLECTION_PATH} className="btn btn-primary">
-                  Shop Trap &amp; Skeet
+          <div className="mt-16 rounded-lg border border-dark-border bg-dark-lighter p-8">
+            <h2 className="heading-3 mb-3 text-text-primary">
+              {isShotgun
+                ? 'Part of the Capapie Trap & Skeet range'
+                : 'Part of the Capapie ISSF range'}
+            </h2>
+            <p className="text-text-secondary mb-6 leading-relaxed">
+              {isShotgun
+                ? 'Browse the full shotgun collection — competition vests, inners, bags, shell carriers, gun covers and accessories supplied across South Africa.'
+                : 'Browse the full precision collection — shooting jackets and trousers, inners, gloves, shoes, bags and range accessories supplied across South Africa.'}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href={isShotgun ? SHOTGUN_COLLECTION_PATH : ISSF_COLLECTION_PATH}
+                className="btn btn-primary"
+              >
+                {isShotgun ? 'Shop Trap & Skeet' : 'Shop ISSF Equipment'}
+              </Link>
+              {categorySlug && (
+                <Link href={categoryHref} className="btn btn-secondary">
+                  All {product.category}
                 </Link>
-                {categorySlug && (
-                  <Link href={categoryHref} className="btn btn-secondary">
-                    All {product.category}
-                  </Link>
-                )}
-              </div>
+              )}
             </div>
-          )}
+          </div>
 
           {related.length > 0 && (
             <section className="mt-20" aria-labelledby="related-heading">
@@ -274,23 +307,33 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
 
   if (categoryName) {
     const categoryProducts = getPrecisionProductsByCategory(categoryName);
+    const meta = precisionCategoryMeta(categoryName);
+    const otherCategories = getPrecisionCategories().filter((c) => c !== categoryName);
+
     return (
       <div className="section-padding bg-dark">
         <div className="container-custom">
           <Breadcrumbs
-            items={[{ name: 'Shop', href: '/shop' }, { name: categoryName }]}
+            items={[
+              { name: 'Shop', href: '/shop' },
+              { name: 'ISSF / Precision', href: ISSF_COLLECTION_PATH },
+              { name: categoryName },
+            ]}
           />
 
           <div className="mb-16">
             <div className="mb-6">
-              <Link href="/shop" className="inline-flex items-center text-text-secondary hover:text-accent transition-colors uppercase tracking-wide text-sm font-semibold">
+              <Link href={ISSF_COLLECTION_PATH} className="inline-flex items-center text-text-secondary hover:text-accent transition-colors uppercase tracking-wide text-sm font-semibold">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Back to Shop
+                All ISSF Equipment
               </Link>
             </div>
-            <h1 className="heading-1 mb-6 text-text-primary">{categoryName}</h1>
+            <h1 className="heading-1 mb-6 text-text-primary">{meta?.heading || categoryName}</h1>
+            {meta?.intro && (
+              <p className="text-body max-w-3xl text-lg leading-relaxed">{meta.intro}</p>
+            )}
           </div>
 
           {categoryProducts.length > 0 ? (
@@ -304,6 +347,24 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
               <p className="text-text-secondary mb-6 text-lg">No products available in this category.</p>
               <Link href="/shop" className="btn btn-primary">Browse All Products</Link>
             </div>
+          )}
+
+          {otherCategories.length > 0 && (
+            <nav className="mt-20 border-t border-dark-border pt-10" aria-label="Other ISSF categories">
+              <h2 className="heading-3 mb-6 text-text-primary">More ISSF equipment</h2>
+              <ul className="flex flex-wrap gap-3">
+                {otherCategories.map((c) => (
+                  <li key={c}>
+                    <Link
+                      href={`/shop/${categoryToSlug(c)}`}
+                      className="inline-block rounded border border-dark-border px-4 py-2 text-sm text-text-secondary transition-colors hover:border-accent hover:text-accent"
+                    >
+                      {precisionCategoryMeta(c)?.heading || c}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           )}
         </div>
       </div>

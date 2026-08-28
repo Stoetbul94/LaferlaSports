@@ -31,11 +31,11 @@ export const SHOTGUN_CATEGORIES: ShotgunCategory[] = [
     name: 'Shooting Vests',
     shortName: 'Shooting Vests',
     heading: 'Trap & Skeet Shooting Vests',
-    metaTitle: 'Trap & Skeet Shooting Vests | Capapie South Africa',
+    metaTitle: 'Trap & Skeet Shooting Vests South Africa | Capapie',
     metaDescription:
       'Capapie CAPIVEST competition shooting vests for Trap and Skeet, available in standard sizes and made to measure. Supplied in South Africa by Laferla Sports.',
     intro:
-      'Competition shooting vests for Trap and Skeet shooters. Every CAPIVEST model is built around breathable ventilation, moisture management, stretch panelling and an integrated recoil pad, and is available in standard sizes or made to measure.',
+      'Competition shooting vests for Trap and Skeet shooters, including Capapie made-to-measure options supplied by Laferla Sports in South Africa. Every CAPIVEST is built around ventilation, moisture management, stretch panelling and an integrated recoil pad, in standard sizes or made to measure.',
     image: '/images/products/shotgun/capapie-capivest-01-shotgun-vest-front.webp',
     imageAlt: 'Capapie CAPIVEST 01 Trap and Skeet shooting vest, front view',
     heroImage: '/images/products/shotgun/shotgun-competition-shooters.webp',

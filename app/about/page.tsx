@@ -3,7 +3,9 @@ import Image from 'next/image';
 
 export const metadata = {
   title: 'About Us',
-  description: 'Learn about Laferla Sports, South Africa\'s authorized Capapie dealer specializing in ISSF shooting sports equipment.',
+  description:
+    'Laferla Sports is South Africa’s authorised Capapie dealer for ISSF shooting equipment, Trap and Skeet shotgun gear, and ISSF rifle coaching.',
+  alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {

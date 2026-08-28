@@ -8,15 +8,18 @@ interface BreadcrumbsProps {
 }
 
 export default function Breadcrumbs({ items, jsonLd = true }: BreadcrumbsProps) {
+  const trail: Crumb[] =
+    items[0]?.name === 'Home' ? items : [{ name: 'Home', href: '/' }, ...items];
+
   return (
     <>
-      {jsonLd && <BreadcrumbJsonLd items={items} />}
+      {jsonLd && <BreadcrumbJsonLd items={trail} />}
       <nav
         aria-label="Breadcrumb"
         className="mb-8 text-sm text-text-secondary uppercase tracking-wide"
       >
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          {items.map((item, i) => (
+          {trail.map((item, i) => (
             <li key={`${item.name}-${i}`} className="flex items-center gap-x-2">
               {item.href ? (
                 <Link href={item.href} className="hover:text-accent transition-colors">
@@ -27,7 +30,7 @@ export default function Breadcrumbs({ items, jsonLd = true }: BreadcrumbsProps) 
                   {item.name}
                 </span>
               )}
-              {i < items.length - 1 && (
+              {i < trail.length - 1 && (
                 <span aria-hidden="true" className="text-text-muted">
                   /
                 </span>

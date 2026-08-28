@@ -2,17 +2,19 @@ import nodemailer from 'nodemailer';
 
 export interface QuoteItemPayload {
   /** Empty for ranges Capapie publishes without item codes (e.g. Trap & Skeet). */
-  product_code: string;
+  product_code?: string;
   name: string;
   category: string;
   quantity: number;
+  /** Manufacturer product page, if published. */
   product_link?: string;
+  /** Absolute Laferla Sports product URL. */
+  page_url?: string;
 }
 
 export interface QuoteRequestPayload {
   customerName: string;
   email: string;
-  phone: string;
   notes?: string;
   items: QuoteItemPayload[];
 }
@@ -23,6 +25,21 @@ export interface ContactMessagePayload {
   phone?: string;
   subject: string;
   message: string;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function requireMailConfig() {
+  const missing = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'].filter((key) => !process.env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Email is not configured. Missing: ${missing.join(', ')}`);
+  }
 }
 
 const transporter = nodemailer.createTransport({
@@ -39,22 +56,32 @@ const transporter = nodemailer.createTransport({
  * Sends a quote request notification email to the site owner.
  */
 export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
+  requireMailConfig();
   const orderEmail = process.env.ORDER_EMAIL || 'info@laferlasports.com';
 
   const itemsHtml = quote.items
-    .map(
-      (item) => `
-    <tr>
-      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.name}${
+    .map((item) => {
+      const name = escapeHtml(item.name);
+      const sku = escapeHtml(item.product_code || '—');
+      const category = escapeHtml(item.category);
+      const links = [
+        item.page_url
+          ? `<a href="${escapeHtml(item.page_url)}" style="color:#b11217;">product page</a>`
+          : '',
         item.product_link
-          ? ` <a href="${item.product_link}" style="color:#b11217;">(view)</a>`
-          : ''
-      }</td>
-      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.product_code || '—'}</td>
-      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.category}</td>
+          ? `<a href="${escapeHtml(item.product_link)}" style="color:#b11217;">manufacturer</a>`
+          : '',
+      ]
+        .filter(Boolean)
+        .join(' · ');
+      return `
+    <tr>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${name}${links ? ` ${links}` : ''}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${sku}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${category}</td>
       <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
-    </tr>`
-    )
+    </tr>`;
+    })
     .join('');
 
   const emailHtml = `
@@ -81,9 +108,8 @@ export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
     <div class="content">
       <div class="section">
         <div class="section-title">Customer</div>
-        <p><strong>Name:</strong> ${quote.customerName}</p>
-        <p><strong>Email:</strong> ${quote.email}</p>
-        <p><strong>Phone:</strong> ${quote.phone}</p>
+        <p><strong>Name:</strong> ${escapeHtml(quote.customerName)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(quote.email)}</p>
       </div>
 
       <div class="section">
@@ -103,7 +129,7 @@ export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
 
       ${
         quote.notes
-          ? `<div class="section"><div class="section-title">Notes</div><p>${quote.notes}</p></div>`
+          ? `<div class="section"><div class="section-title">Notes</div><p>${escapeHtml(quote.notes)}</p></div>`
           : ''
       }
 
@@ -124,14 +150,14 @@ export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
 Customer:
 Name: ${quote.customerName}
 Email: ${quote.email}
-Phone: ${quote.phone}
 
 Requested Items:
 ${quote.items
-  .map(
-    (item) =>
-      `- ${item.name} (${item.product_code ? `SKU ${item.product_code}, ` : ''}${item.category}) x ${item.quantity}`
-  )
+  .map((item) => {
+    const sku = item.product_code ? `SKU ${item.product_code}, ` : '';
+    const url = item.page_url ? ` ${item.page_url}` : '';
+    return `- ${item.name} (${sku}${item.category}) x ${item.quantity}${url}`;
+  })
   .join('\n')}
 
 ${quote.notes ? `Notes:\n${quote.notes}\n` : ''}
@@ -159,6 +185,7 @@ Generated at ${new Date().toLocaleString('en-ZA')}`;
  * Sends a contact form message to the site owner.
  */
 export async function sendContactEmail(contact: ContactMessagePayload) {
+  requireMailConfig();
   const contactEmail = process.env.CONTACT_EMAIL || process.env.ORDER_EMAIL || 'info@laferlasports.com';
 
   const emailHtml = `

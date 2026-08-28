@@ -8,7 +8,6 @@ import { z } from 'zod';
 const schema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
   discipline: z.string().min(1, 'Please select a discipline'),
   level: z.string().min(1, 'Please select a level'),
   availability: z.string().optional(),
@@ -52,7 +51,6 @@ export default function CoachingEnquiryForm() {
         body: JSON.stringify({
           name: data.name,
           email: data.email,
-          phone: data.phone,
           subject: `Coaching Enquiry — ${data.discipline} (${data.level})`,
           message,
         }),
@@ -97,16 +95,10 @@ export default function CoachingEnquiryForm() {
             {errors.name && <p className="mt-2 text-sm text-red-400">{errors.name.message}</p>}
           </div>
           <div>
-            <label htmlFor="c-phone" className={labelClass}>Phone *</label>
-            <input id="c-phone" type="tel" {...register('phone')} className={inputClass} />
-            {errors.phone && <p className="mt-2 text-sm text-red-400">{errors.phone.message}</p>}
+            <label htmlFor="c-email" className={labelClass}>Email *</label>
+            <input id="c-email" type="email" {...register('email')} className={inputClass} />
+            {errors.email && <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>}
           </div>
-        </div>
-
-        <div>
-          <label htmlFor="c-email" className={labelClass}>Email *</label>
-          <input id="c-email" type="email" {...register('email')} className={inputClass} />
-          {errors.email && <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>}
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

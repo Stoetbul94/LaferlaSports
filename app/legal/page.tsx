@@ -1,6 +1,7 @@
 export const metadata = {
   title: 'Terms & Conditions',
-  description: 'Terms and conditions for Laferla Sports order requests and purchases.',
+  description: 'Terms and conditions for requesting quotes and ordering Capapie shooting equipment from Laferla Sports.',
+  alternates: { canonical: '/legal' },
 };
 
 export default function LegalPage() {

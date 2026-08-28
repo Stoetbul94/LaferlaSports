@@ -16,14 +16,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  // Shotgun collection landing page - a primary entry point, so ranked with
-  // the top-level shop rather than the category pages.
-  const shotgunLanding = {
-    url: `${SITE_URL}/shop/shotgun`,
-    lastModified: now,
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  };
+  const collectionLandings = [
+    { url: `${SITE_URL}/shop/issf`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
+    { url: `${SITE_URL}/shop/shotgun`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
+  ];
 
   const categoryRoutes = getPrecisionCategories().map((category) => ({
     url: `${SITE_URL}/shop/${categoryToSlug(category)}`,
@@ -48,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes,
-    shotgunLanding,
+    ...collectionLandings,
     ...categoryRoutes,
     ...shotgunCategoryRoutes,
     ...productRoutes,
