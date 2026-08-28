@@ -40,6 +40,10 @@ CONTACT_EMAIL=info@laferlasports.com
 
 **Note:** For development, email sending may fail if SMTP is not configured. The site will still function, but order request emails won't be sent. In production, ensure SMTP credentials are properly configured.
 
+**Canonical domain:** the production domain is `https://www.laferlasports.com`, hard-coded as the default `SITE_URL` in `lib/seo.ts`. It drives every canonical tag, OpenGraph/Twitter URL, JSON-LD `url`, `sitemap.xml` and `robots.txt` host, so there is nothing else to change if the domain moves.
+
+`NEXT_PUBLIC_SITE_URL` overrides it and is intended only for preview/staging deploys. **Leave it unset in production** — a stale value silently rewrites every canonical URL on the site and is invisible in the source.
+
 3. Populate / refresh products (scrapes capapiesports.com, downloads images, regenerates data):
 ```bash
 pnpm scrape-products
