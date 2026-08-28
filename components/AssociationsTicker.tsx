@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+
+import { usePrefersReducedMotion } from '@/lib/use-reduced-motion';
 
 /**
  * "Coverflow" affiliations strip shown before the footer.
@@ -67,11 +69,7 @@ export default function AssociationsTicker() {
   const offsetRef = useRef(0);
   const pausedRef = useRef(false);
   const rafRef = useRef<number | null>(null);
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }, []);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     if (reduced) return;

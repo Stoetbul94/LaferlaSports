@@ -5,7 +5,7 @@ import { mailtoUrl, CONTACT_EMAIL } from '@/lib/contact-info';
 export const metadata: Metadata = {
   title: 'FAQ — Ordering, Sizing & Delivery',
   description:
-    'Answers to common questions about ordering Capapie ISSF shooting equipment from Laferla Sports — quotes, pricing, sizing, delivery across South Africa, and coaching.',
+    'Common questions about ordering Capapie ISSF and Trap & Skeet shooting equipment from Laferla Sports — quotes, made-to-measure vests, sizing, delivery across South Africa and coaching.',
   alternates: { canonical: '/faq' },
 };
 
@@ -37,7 +37,19 @@ const FAQS: QA[] = [
   },
   {
     q: 'Is the equipment ISSF compliant?',
-    a: 'All Capapie competition apparel and equipment is manufactured to International Shooting Sport Federation (ISSF) rules and specifications.',
+    a: 'All Capapie precision competition apparel and equipment is manufactured to International Shooting Sport Federation (ISSF) rules and specifications. The Trap & Skeet range is built for competitive shotgun shooting; check your governing body’s current rules for any event-specific requirements.',
+  },
+  {
+    q: 'Do you supply Trap and Skeet shotgun equipment?',
+    a: 'Yes. We supply the full Capapie Trap & Skeet range in South Africa — CAPIVEST shooting vests, performance inners, cartridge bags and shell carriers, side blinders, protective shotgun covers and casual wear. Browse the Trap & Skeet collection in the shop.',
+  },
+  {
+    q: 'Can I order a made-to-measure shooting vest?',
+    a: 'Yes. Every Capapie CAPIVEST and shooting inner is available in standard sizes or made to measure. You choose your fabric, suede, mesh, lycra, binding and cord piping colours from the manufacturer material table, then we send you the Capapie measurement sheet and quote the garment and lead time before anything is confirmed.',
+  },
+  {
+    q: 'What is a shotgun sock?',
+    a: 'A shotgun sock is a stretchable protective sleeve that slides over the length of a shotgun to guard the barrel and stock against knocks, dust and scratches in transit and storage. Despite the name, it is a gun cover — not footwear.',
   },
   {
     q: 'How do I choose the right size?',

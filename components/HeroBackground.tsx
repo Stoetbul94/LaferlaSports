@@ -3,19 +3,19 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
+import { usePrefersReducedMotion } from '@/lib/use-reduced-motion';
+
 /**
  * Hero background image with a slow Ken-Burns zoom (CSS) plus subtle
  * cursor/scroll parallax (no dependencies). Honours reduced-motion via CSS.
  */
 export default function HeroBackground() {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
+    if (!el || reduced) return;
 
     let raf = 0;
     const apply = (x: number, y: number) => {
@@ -39,8 +39,10 @@ export default function HeroBackground() {
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(raf);
+      el.style.removeProperty('--px');
+      el.style.removeProperty('--py');
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <div className="absolute inset-0 z-0 flex items-center justify-end pointer-events-none overflow-hidden">

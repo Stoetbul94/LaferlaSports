@@ -1,17 +1,22 @@
 import { notFound } from 'next/navigation';
 import {
-  getCapapieProductBySlug,
-  getAllCapapieProducts,
-  getCapapieProductsByCategory,
-  getCapapieCategories,
-} from '@/lib/capapie-products';
+  getAllProducts,
+  getPrecisionCategories,
+  getPrecisionProductsByCategory,
+  getProductBySlug,
+  getRelatedProducts,
+} from '@/lib/catalog';
 import CapapieProductCard from '@/components/CapapieProductCard';
 import ProductGallery from '@/components/ProductGallery';
 import AddToCartButton from '@/components/AddToCartButton';
 import ProductJsonLd from '@/components/ProductJsonLd';
 import SizeGuide from '@/components/SizeGuide';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import VestMaterialTable from '@/components/VestMaterialTable';
 import Link from 'next/link';
 import { categoryToSlug, slugToCategory } from '@/lib/category-slug';
+import { productBreadcrumbs, SHOTGUN_COLLECTION_PATH } from '@/lib/breadcrumbs';
+import { shotgunCategorySlugForName } from '@/lib/shotgun-categories';
 import { productMailtoUrl } from '@/lib/contact-info';
 import { absoluteUrl } from '@/lib/seo';
 
@@ -20,11 +25,12 @@ interface ShopDynamicPageProps {
 }
 
 export async function generateStaticParams() {
-  const products = getAllCapapieProducts();
-  const categories = getCapapieCategories();
-
-  const productParams = products.map((product) => ({ slug: product.slug }));
-  const categoryParams = categories.map((category) => ({ slug: categoryToSlug(category) }));
+  // Shotgun categories are routed under /shop/shotgun/<slug>, so only the
+  // precision categories share this flat namespace with product slugs.
+  const productParams = getAllProducts().map((product) => ({ slug: product.slug }));
+  const categoryParams = getPrecisionCategories().map((category) => ({
+    slug: categoryToSlug(category),
+  }));
 
   return [...productParams, ...categoryParams];
 }
@@ -36,23 +42,27 @@ export async function generateMetadata({ params }: ShopDynamicPageProps) {
     return { title: 'Page Not Found' };
   }
 
-  const product = getCapapieProductBySlug(slug);
+  const product = getProductBySlug(slug);
   if (product) {
+    const description =
+      product.seo_description ||
+      product.short_description ||
+      `${product.name} — Capapie shooting equipment from Laferla Sports, South Africa.`;
+
     return {
-      title: product.name,
-      description: product.short_description || `${product.name} — Capapie ISSF equipment from Laferla Sports, South Africa.`,
+      title: product.seo_title || product.name,
+      description,
       alternates: { canonical: `/shop/${product.slug}` },
       openGraph: {
         title: `${product.name} - Laferla Sports`,
-        description: product.short_description,
+        description,
         images: product.image_path ? [product.image_path] : undefined,
         type: 'website',
       },
     };
   }
 
-  const allCategories = getCapapieCategories();
-  const categoryName = slugToCategory(slug, allCategories);
+  const categoryName = slugToCategory(slug, getPrecisionCategories());
   if (categoryName) {
     return {
       title: categoryName,
@@ -71,35 +81,52 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
     notFound();
   }
 
-  const product = getCapapieProductBySlug(slug);
+  const product = getProductBySlug(slug);
   if (product) {
+    const isShotgun = product.discipline === 'shotgun';
+    const isVest = product.category === 'Shooting Vests';
+    const categorySlug = isShotgun
+      ? shotgunCategorySlugForName(product.category)
+      : categoryToSlug(product.category);
+    const categoryHref = isShotgun
+      ? `${SHOTGUN_COLLECTION_PATH}/${categorySlug}`
+      : `/shop/${categorySlug}`;
+    const related = getRelatedProducts(product);
+
     return (
       <div className="section-padding bg-dark">
         <ProductJsonLd product={product} />
         <div className="container-custom">
-          <nav className="mb-8 text-sm text-text-secondary uppercase tracking-wide">
-            <Link href="/shop" className="hover:text-accent transition-colors">Shop</Link>
-            <span className="mx-2">/</span>
-            <Link href={`/shop/${categoryToSlug(product.category)}`} className="hover:text-accent transition-colors">
-              {product.category}
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-text-primary">{product.name}</span>
-          </nav>
+          <Breadcrumbs items={productBreadcrumbs(product)} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <ProductGallery images={product.images} alt={product.name} />
+            <ProductGallery
+              images={product.images}
+              alt={product.image_alt || product.name}
+            />
 
             <div>
-              <div className="mb-6">
-                <span className="text-xs uppercase tracking-wider text-accent font-bold">{product.category}</span>
+              <div className="mb-6 flex flex-wrap items-center gap-3">
+                <Link
+                  href={categoryHref}
+                  className="text-xs uppercase tracking-wider text-accent font-bold hover:underline"
+                >
+                  {product.category}
+                </Link>
+                {product.made_to_measure && (
+                  <span className="rounded border border-accent px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-accent">
+                    Standard &amp; Made-to-Measure
+                  </span>
+                )}
               </div>
 
               <h1 className="heading-2 mb-6 text-text-primary">{product.name}</h1>
 
               <div className="mb-8 pb-8 border-b border-dark-border">
                 <div className="text-sm text-text-secondary uppercase tracking-wide">
-                  SKU / Item Code: {product.product_code}
+                  {product.product_code
+                    ? `SKU / Item Code: ${product.product_code}`
+                    : 'Quote-based pricing — add to a quote request for a price'}
                 </div>
               </div>
 
@@ -109,7 +136,7 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
                   <ul className="space-y-3">
                     {product.features.map((feature, i) => (
                       <li key={i} className="flex text-text-secondary leading-relaxed">
-                        <span className="text-accent mr-3 flex-shrink-0">▸</span>
+                        <span className="text-accent mr-3 flex-shrink-0" aria-hidden="true">▸</span>
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -123,6 +150,15 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
                     </p>
                   </div>
                 )
+              )}
+
+              {isShotgun && product.features.length > 0 && product.long_description && (
+                <div className="mb-8">
+                  <h2 className="font-bold text-xl mb-4 text-text-primary uppercase tracking-wide">Description</h2>
+                  <p className="text-body leading-relaxed whitespace-pre-line">
+                    {product.long_description}
+                  </p>
+                </div>
               )}
 
               {product.colors.length > 0 && (
@@ -169,7 +205,7 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 border-2 border-accent text-accent hover:bg-accent hover:text-white transition-all duration-200 uppercase tracking-wide font-semibold text-sm rounded focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                     View official Capapie product page
@@ -178,35 +214,77 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
               )}
 
               <div className="text-sm text-text-secondary space-y-3 pt-8 border-t border-dark-border">
-                <p className="flex items-center"><span className="text-accent mr-2">✓</span>Official Capapie Authorised Dealer</p>
-                <p className="flex items-center"><span className="text-accent mr-2">✓</span>ISSF Competition Compliant</p>
-                <p className="flex items-center"><span className="text-accent mr-2">✓</span>Professional Support Available</p>
+                <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Official Capapie Authorised Dealer</p>
+                {isShotgun ? (
+                  <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Built for competitive Trap &amp; Skeet shooting</p>
+                ) : (
+                  <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>ISSF Competition Compliant</p>
+                )}
+                <p className="flex items-center"><span className="text-accent mr-2" aria-hidden="true">✓</span>Professional Support Available</p>
               </div>
             </div>
           </div>
+
+          {isVest && (
+            <div className="mt-20 max-w-4xl">
+              <VestMaterialTable />
+            </div>
+          )}
+
+          {isShotgun && (
+            <div className="mt-16 rounded-lg border border-dark-border bg-dark-lighter p-8">
+              <h2 className="heading-3 mb-3 text-text-primary">
+                Part of the Capapie Trap &amp; Skeet range
+              </h2>
+              <p className="text-text-secondary mb-6 leading-relaxed">
+                Browse the full shotgun collection — competition vests, inners, bags,
+                shell carriers, gun covers and accessories supplied across South Africa.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href={SHOTGUN_COLLECTION_PATH} className="btn btn-primary">
+                  Shop Trap &amp; Skeet
+                </Link>
+                {categorySlug && (
+                  <Link href={categoryHref} className="btn btn-secondary">
+                    All {product.category}
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
+
+          {related.length > 0 && (
+            <section className="mt-20" aria-labelledby="related-heading">
+              <h2 id="related-heading" className="heading-3 mb-8 text-text-primary">
+                You may also like
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {related.map((p) => (
+                  <CapapieProductCard key={p.slug} product={p} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </div>
     );
   }
 
-  const allCategories = getCapapieCategories();
-  const categoryName = slugToCategory(slug, allCategories);
+  const categoryName = slugToCategory(slug, getPrecisionCategories());
 
   if (categoryName) {
-    const categoryProducts = getCapapieProductsByCategory(categoryName);
+    const categoryProducts = getPrecisionProductsByCategory(categoryName);
     return (
       <div className="section-padding bg-dark">
         <div className="container-custom">
-          <nav className="mb-8 text-sm text-text-secondary uppercase tracking-wide">
-            <Link href="/shop" className="hover:text-accent transition-colors">Shop</Link>
-            <span className="mx-2">/</span>
-            <span className="text-text-primary">{categoryName}</span>
-          </nav>
+          <Breadcrumbs
+            items={[{ name: 'Shop', href: '/shop' }, { name: categoryName }]}
+          />
 
           <div className="mb-16">
             <div className="mb-6">
               <Link href="/shop" className="inline-flex items-center text-text-secondary hover:text-accent transition-colors uppercase tracking-wide text-sm font-semibold">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Back to Shop
@@ -217,8 +295,8 @@ export default async function ShopDynamicPage({ params }: ShopDynamicPageProps) 
 
           {categoryProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {categoryProducts.map((p) => (
-                <CapapieProductCard key={p.slug} product={p} />
+              {categoryProducts.map((p, i) => (
+                <CapapieProductCard key={p.slug} product={p} priority={i < 3} />
               ))}
             </div>
           ) : (

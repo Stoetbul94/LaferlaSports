@@ -15,7 +15,7 @@ export default function ShippingPage() {
               <h2 className="heading-3 mb-6 text-text-primary">How Our Order Process Works</h2>
               <p className="text-body mb-8 text-lg leading-relaxed">
                 Laferla Sports uses a request-based ordering system. We do not process payments 
-                online. Instead, you submit an order request, and we'll send you an invoice via email.
+                online. Instead, you submit an order request, and we’ll send you an invoice via email.
               </p>
 
               <div className="space-y-6">
@@ -57,7 +57,7 @@ export default function ShippingPage() {
                     <div>
                       <h3 className="font-bold text-xl mb-3 text-text-primary uppercase tracking-wide">Receive Invoice</h3>
                       <p className="text-text-secondary leading-relaxed">
-                        We'll review your order request, verify product availability, and send you 
+                        We’ll review your order request, verify product availability, and send you 
                         a detailed invoice via email. The invoice will include payment instructions 
                         and bank transfer details.
                       </p>
@@ -74,7 +74,7 @@ export default function ShippingPage() {
                       <h3 className="font-bold text-xl mb-3 text-text-primary uppercase tracking-wide">Complete Payment</h3>
                       <p className="text-text-secondary leading-relaxed">
                         Make payment via bank transfer using the details provided in your invoice. 
-                        Once payment is confirmed, we'll process your order.
+                        Once payment is confirmed, we’ll process your order.
                       </p>
                     </div>
                   </div>
@@ -88,7 +88,7 @@ export default function ShippingPage() {
                     <div>
                       <h3 className="font-bold text-xl mb-3 text-text-primary uppercase tracking-wide">Shipping & Delivery</h3>
                       <p className="text-text-secondary leading-relaxed">
-                        Once payment is confirmed, we'll arrange shipping to your address. You'll 
+                        Once payment is confirmed, we’ll arrange shipping to your address. You’ll 
                         receive tracking information via email. Delivery times vary based on your 
                         location and product availability.
                       </p>
@@ -145,7 +145,7 @@ export default function ShippingPage() {
                 <div className="border-l-4 border-accent pl-6">
                   <h3 className="font-bold text-lg mb-3 text-text-primary uppercase tracking-wide">Product Availability</h3>
                   <p className="text-text-secondary leading-relaxed">
-                    Some products may need to be ordered from suppliers. We'll inform you of any 
+                    Some products may need to be ordered from suppliers. We’ll inform you of any 
                     extended lead times in your invoice.
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default function ShippingPage() {
               <h2 className="heading-3 mb-6 text-text-primary">Questions?</h2>
               <p className="text-body mb-8 text-lg leading-relaxed">
                 If you have any questions about our order process, shipping, or delivery, 
-                please don't hesitate to contact us.
+                please don’t hesitate to contact us.
               </p>
               <a href="/contact" className="btn btn-primary">
                 Contact Us

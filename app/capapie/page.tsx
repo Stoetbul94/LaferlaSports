@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export const metadata = {
   title: 'Capapie Brand',
   description: 'Learn about Capapie, the premier manufacturer of ISSF competition shooting equipment. Official authorized dealer in South Africa.',
@@ -42,7 +44,7 @@ export default function CapapiePage() {
                 <div className="bg-dark-lighter border border-dark-border rounded-lg p-6">
                   <h3 className="font-bold text-xl mb-3 text-text-primary uppercase tracking-wide">Precision Engineering</h3>
                   <p className="text-text-secondary leading-relaxed">
-                    Capapie's commitment to precision engineering ensures consistent performance 
+                    Capapie’s commitment to precision engineering ensures consistent performance 
                     and reliability that competitive shooters demand.
                   </p>
                 </div>
@@ -98,9 +100,9 @@ export default function CapapiePage() {
                 Browse our selection of Capapie competition equipment, all verified for ISSF 
                 compliance and backed by our expertise.
               </p>
-              <a href="/shop" className="btn btn-primary">
+              <Link href="/shop" className="btn btn-primary">
                 View Capapie Products
-              </a>
+              </Link>
             </section>
           </div>
         </div>

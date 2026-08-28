@@ -1,13 +1,13 @@
 /**
  * Central SEO configuration for Laferla Sports.
- * Update SITE_URL once the production domain is confirmed.
+ * Canonical host; override per-environment with NEXT_PUBLIC_SITE_URL.
  */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.laferlasports.co.za').replace(/\/$/, '');
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.laferlasports.com').replace(/\/$/, '');
 
 export const SITE_NAME = 'Laferla Sports';
 
 export const SITE_DESCRIPTION =
-  "South Africa's authorised Capapie dealer for ISSF shooting sports equipment — competition jackets, trousers, gloves, shoes and accessories for air rifle and target rifle shooters.";
+  "South Africa's authorised Capapie dealer for competitive shooting equipment — ISSF jackets, trousers, gloves and shoes, plus made-to-measure Trap & Skeet shotgun vests, inners, bags and accessories.";
 
 export const ORG = {
   name: SITE_NAME,

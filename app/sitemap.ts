@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { getAllCapapieProducts, getCapapieCategories } from '@/lib/capapie-products';
+import { getAllProducts, getPrecisionCategories } from '@/lib/catalog';
+import { SHOTGUN_CATEGORIES } from '@/lib/shotgun-categories';
 import { categoryToSlug } from '@/lib/category-slug';
 import { SITE_URL } from '@/lib/seo';
 
@@ -15,19 +16,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  const categoryRoutes = getCapapieCategories().map((category) => ({
+  // Shotgun collection landing page - a primary entry point, so ranked with
+  // the top-level shop rather than the category pages.
+  const shotgunLanding = {
+    url: `${SITE_URL}/shop/shotgun`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  };
+
+  const categoryRoutes = getPrecisionCategories().map((category) => ({
     url: `${SITE_URL}/shop/${categoryToSlug(category)}`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  const productRoutes = getAllCapapieProducts().map((product) => ({
+  const shotgunCategoryRoutes = SHOTGUN_CATEGORIES.map((category) => ({
+    url: `${SITE_URL}/shop/shotgun/${category.slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  const productRoutes = getAllProducts().map((product) => ({
     url: `${SITE_URL}/shop/${product.slug}`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes];
+  return [
+    ...staticRoutes,
+    shotgunLanding,
+    ...categoryRoutes,
+    ...shotgunCategoryRoutes,
+    ...productRoutes,
+  ];
 }

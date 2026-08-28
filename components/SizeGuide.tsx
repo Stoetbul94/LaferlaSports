@@ -8,7 +8,16 @@ import { mailtoUrl } from '@/lib/contact-info';
  *
  * Uses native <details> so it works without JavaScript.
  */
-const APPAREL = new Set(['Jackets & Trousers', 'Gloves', 'Shoes', 'Inners']);
+const APPAREL = new Set([
+  'Jackets & Trousers',
+  'Gloves',
+  'Shoes',
+  'Inners',
+  // Capapie Trap & Skeet apparel
+  'Shooting Vests',
+  'Shotgun Inners',
+  'Casual Wear',
+]);
 
 const MEASUREMENT_TIPS: Record<string, string[]> = {
   'Jackets & Trousers': [
@@ -26,6 +35,18 @@ const MEASUREMENT_TIPS: Record<string, string[]> = {
     'Flat shooting soles fit snug — a half size up is common over street shoes.',
   ],
   Inners: ['Match the inner size to your jacket/trouser size.'],
+  'Shooting Vests': [
+    'Chest: measure around the fullest part over the inner and any layers you shoot in.',
+    'Note your shooting shoulder (right or left) so the recoil pad is placed correctly.',
+    'Height and weight help us confirm the closest standard size.',
+    'Between sizes? Send the measurements and we will advise standard sizing or made to measure.',
+  ],
+  'Shotgun Inners': [
+    'Chest: measure around the fullest part, keeping the tape level.',
+    'Inners are worn close to the body — match the size to the vest you will wear over it.',
+    'Tell us whether you want half sleeve or full sleeve.',
+  ],
+  'Casual Wear': ['Chest: measure around the fullest part and give your usual shirt size.'],
 };
 
 export default function SizeGuide({ category, sizing }: { category: string; sizing?: string }) {

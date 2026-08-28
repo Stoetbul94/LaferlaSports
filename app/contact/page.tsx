@@ -46,7 +46,7 @@ export default function ContactPage() {
 
       setSubmitStatus('success');
       reset();
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -65,7 +65,7 @@ export default function ContactPage() {
               <h2 className="heading-3 mb-8 text-text-primary">Get in Touch</h2>
               <p className="text-body mb-10 text-lg leading-relaxed">
                 Have questions about our products, need advice on equipment selection, or want 
-                to discuss your order? We're here to help.
+                to discuss your order? We’re here to help.
               </p>
 
               <div className="space-y-8">
@@ -109,7 +109,7 @@ export default function ContactPage() {
               
               {submitStatus === 'success' && (
                 <div className="bg-green-900/20 border border-green-500/50 text-green-400 px-6 py-4 rounded-lg mb-6">
-                  Thank you for your message! We'll get back to you as soon as possible.
+                  Thank you for your message! We’ll get back to you as soon as possible.
                 </div>
               )}
 

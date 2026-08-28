@@ -95,7 +95,7 @@ export default function LegalPage() {
               <h2 className="heading-3 mb-6 text-text-primary">7. ISSF Compliance</h2>
               <p className="text-body mb-4 text-lg leading-relaxed">
                 Products marked as ISSF-compliant are verified to meet ISSF regulations at the 
-                time of listing. However, ISSF regulations may change, and it is the customer's 
+                time of listing. However, ISSF regulations may change, and it is the customer’s 
                 responsibility to verify current compliance for their specific competition requirements.
               </p>
               <p className="text-body text-lg leading-relaxed">

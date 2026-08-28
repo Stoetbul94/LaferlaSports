@@ -33,4 +33,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# brochure tooling intermediates (regenerate with scripts/, see
+# docs/shotgun-brochure-image-map.md). The shipped WebP assets live in
+# public/images/products/shotgun/ and ARE committed.
+/brochure-extract/
+/brochure-check/
+pdf-audit.txt
+pdf-layout.txt
+__pycache__/
+
 

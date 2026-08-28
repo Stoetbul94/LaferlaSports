@@ -29,7 +29,7 @@ export default function AboutPage() {
             <section className="mb-12">
               <h2 className="heading-3 mb-6 text-text-primary">Our Mission</h2>
               <p className="text-body mb-6 text-lg leading-relaxed">
-                Laferla Sports is South Africa's premier authorized dealer for Capapie, 
+                Laferla Sports is South Africa’s premier authorized dealer for Capapie, 
                 specializing in ISSF (International Shooting Sport Federation) competition 
                 equipment. We are dedicated to serving competitive shooters, shooting clubs, 
                 coaches, and serious enthusiasts with professional-grade equipment that meets 
@@ -122,9 +122,9 @@ export default function AboutPage() {
               <h2 className="heading-3 mb-6 text-text-primary">Our Commitment</h2>
               <p className="text-body text-lg leading-relaxed">
                 At Laferla Sports, we believe that competitive shooting requires precision, 
-                dedication, and the right equipment. We're committed to providing that equipment 
-                along with the knowledge and support that helps shooters excel. Whether you're 
-                competing at club level or aiming for international competition, we're here to 
+                dedication, and the right equipment. We’re committed to providing that equipment 
+                along with the knowledge and support that helps shooters excel. Whether you’re 
+                competing at club level or aiming for international competition, we’re here to 
                 support your journey.
               </p>
             </section>
@@ -133,7 +133,7 @@ export default function AboutPage() {
               <h2 className="heading-3 mb-6 text-text-primary">Get in Touch</h2>
               <p className="text-body mb-8 text-lg leading-relaxed">
                 Have questions about our products or need advice on equipment selection? 
-                We're here to help.
+                We’re here to help.
               </p>
               <a href="/contact" className="btn btn-primary">
                 Contact Us

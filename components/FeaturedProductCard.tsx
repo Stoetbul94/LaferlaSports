@@ -56,7 +56,7 @@ export default function FeaturedProductCard({ product }: FeaturedProductCardProp
         <div className="pt-4 border-t border-dark-border">
           <div className="flex items-center justify-between">
             <span className="text-xs text-text-muted uppercase tracking-wide">
-              Code: {product.product_code}
+              {product.product_code ? `Code: ${product.product_code}` : 'Request a quote'}
             </span>
             <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transform translate-x-[-8px] group-hover:translate-x-0 transition-all duration-300">
               <span className="text-xs text-accent uppercase tracking-wide font-semibold">

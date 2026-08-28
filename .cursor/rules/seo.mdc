@@ -6,8 +6,12 @@ alwaysApply: false
 
 # SEO Conventions
 
-Laferla Sports targets "ISSF / Capapie shooting equipment, South Africa". Every
-page and product must reinforce that. Source of truth: `lib/seo.ts`.
+Laferla Sports targets two search themes, both South Africa focused:
+
+1. "ISSF / Capapie precision shooting equipment" (rifle & pistol)
+2. "Capapie Trap & Skeet / shotgun shooting gear" (vests, inners, bags, gun covers)
+
+Every page and product must reinforce one of them. Source of truth: `lib/seo.ts`.
 
 ## Every page MUST export `metadata` (or `generateMetadata`)
 
@@ -26,16 +30,31 @@ export const metadata: Metadata = {
 
 ## Products MUST render structured data
 
-Use `<ProductJsonLd product={product} />` on product pages. Pricing is
-quote-based, so `Product` schema uses ZAR with a quote offer — never invent prices.
+Use `<ProductJsonLd product={product} />` on product pages.
+
+The site is quote-based and publishes no prices, so `Product` schema deliberately
+omits `offers`, `availability`, `sku` (unless Capapie publishes a real item code),
+`aggregateRating` and `review`. Never add a placeholder price to regain rich-result
+eligibility — a fabricated `price: 0` renders as "free" in search.
+
+Pages with a breadcrumb trail should use `<Breadcrumbs />`, which emits
+`BreadcrumbList` structured data alongside the visible nav.
 
 ## Images
 
 - Every `<Image>`/`SafeProductImage` needs a descriptive `alt` (product name + context). Never `alt=""` on meaningful images.
+- Product data carries `image_alt`; prefer it over falling back to the bare product name.
 
-## New routes
+## Catalogue & routes
 
-- Any new public route must be added to `app/sitemap.ts`. Product/category routes are already generated from `lib/capapie-products.ts`.
+- Read products through `lib/catalog.ts`, not the individual data files.
+  `lib/capapie-products.ts` is **generated** by `pnpm scrape-products`;
+  `lib/shotgun-products.ts` is hand-authored from the Capapie brochure.
+- Precision categories live at `/shop/<category-slug>`; shotgun categories live at
+  `/shop/shotgun/<slug>` (see `lib/shotgun-categories.ts`) so the two taxonomies can
+  reuse names like "Accessories" without colliding.
+- All product detail pages stay flat at `/shop/<product-slug>` regardless of discipline.
+- Any new public route must be added to `app/sitemap.ts`.
 
 ## Locale
 

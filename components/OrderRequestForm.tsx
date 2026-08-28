@@ -83,7 +83,9 @@ export default function OrderRequestForm({ items, onCancel, onSuccess }: OrderRe
             <div key={item.product.slug} className="flex justify-between text-text-secondary">
               <span>
                 {item.product.name}
-                <span className="text-text-muted"> · SKU {item.product.product_code}</span>
+                {item.product.product_code && (
+                  <span className="text-text-muted"> · SKU {item.product.product_code}</span>
+                )}
               </span>
               <span className="font-semibold text-text-primary">× {item.quantity}</span>
             </div>

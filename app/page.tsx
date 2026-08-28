@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getFeaturedCapapieProducts } from '@/lib/capapie-products';
 import FeaturedProductCard from '@/components/FeaturedProductCard';
 import HeroBackground from '@/components/HeroBackground';
@@ -118,6 +119,73 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Shooting disciplines */}
+      <section className="section-padding bg-dark-lighter border-y border-dark-border" aria-labelledby="disciplines-heading">
+        <div className="container-custom">
+          <div className="mb-14 text-center">
+            <h2 id="disciplines-heading" className="heading-2 mb-6 text-text-primary">
+              Two Shooting Disciplines
+            </h2>
+            <p className="text-body mx-auto max-w-2xl text-lg">
+              Laferla Sports supplies Capapie equipment for both precision ISSF shooting
+              and competitive shotgun shooting in South Africa.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <Link
+              href="/shop#precision"
+              className="group relative isolate flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-lg border border-dark-border p-8 transition-colors hover:border-accent"
+            >
+              <Image
+                src="/images/MainBackground2.png"
+                alt="Capapie ISSF precision shooting equipment"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="-z-10 object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark via-dark/85 to-dark/40" />
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                Precision / ISSF
+              </p>
+              <h3 className="heading-3 mb-3 text-text-primary">Rifle &amp; Pistol Equipment</h3>
+              <p className="mb-5 leading-relaxed text-text-secondary">
+                Shooting jackets, trousers, gloves, shoes and accessories built to ISSF
+                competition standards.
+              </p>
+              <span className="text-sm font-semibold uppercase tracking-wide text-accent group-hover:underline">
+                Shop Precision Equipment →
+              </span>
+            </Link>
+
+            <Link
+              href="/shop/shotgun"
+              className="group relative isolate flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-lg border border-dark-border p-8 transition-colors hover:border-accent"
+            >
+              <Image
+                src="/images/products/shotgun/shotgun-competition-shooters.webp"
+                alt="Two competitive shooters wearing Capapie Trap and Skeet shooting vests"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="-z-10 object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark via-dark/85 to-dark/40" />
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                Trap &amp; Skeet
+              </p>
+              <h3 className="heading-3 mb-3 text-text-primary">Shotgun Shooting Gear</h3>
+              <p className="mb-5 leading-relaxed text-text-secondary">
+                Made-to-measure Capapie shooting vests, performance inners, cartridge
+                bags, shell carriers and protective gun covers.
+              </p>
+              <span className="text-sm font-semibold uppercase tracking-wide text-accent group-hover:underline">
+                Shop Shotgun Equipment →
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* About Preview */}
       <section className="section-padding bg-dark-lighter border-y border-dark-border">

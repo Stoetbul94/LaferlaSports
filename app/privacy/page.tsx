@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             <section className="mb-10">
               <h2 className="heading-3 mb-6 text-text-primary">Introduction</h2>
               <p className="text-body text-lg leading-relaxed">
-                Laferla Sports ("we", "our", or "us") is committed to protecting your privacy. 
+                Laferla Sports (“we”, “our”, or “us”) is committed to protecting your privacy. 
                 This Privacy Policy explains how we collect, use, and protect your personal 
                 information when you use our website and services.
               </p>
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
               <h2 className="heading-3 mb-6 text-text-primary">Changes to This Policy</h2>
               <p className="text-body text-lg leading-relaxed">
                 We may update this Privacy Policy from time to time. We will notify you of any 
-                changes by posting the new policy on this page and updating the "Last updated" date.
+                changes by posting the new policy on this page and updating the “Last updated” date.
               </p>
             </section>
 

@@ -76,7 +76,8 @@ export default function CartPage() {
                         {item.product.name}
                       </Link>
                       <div className="text-sm text-text-secondary uppercase tracking-wide">
-                        {item.product.category} · SKU: {item.product.product_code}
+                        {item.product.category}
+                        {item.product.product_code && ` · SKU: ${item.product.product_code}`}
                       </div>
                     </div>
 

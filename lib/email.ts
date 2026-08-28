@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 export interface QuoteItemPayload {
+  /** Empty for ranges Capapie publishes without item codes (e.g. Trap & Skeet). */
   product_code: string;
   name: string;
   category: string;
@@ -49,7 +50,7 @@ export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
           ? ` <a href="${item.product_link}" style="color:#b11217;">(view)</a>`
           : ''
       }</td>
-      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.product_code}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.product_code || '—'}</td>
       <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.category}</td>
       <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
     </tr>`
@@ -127,7 +128,10 @@ Phone: ${quote.phone}
 
 Requested Items:
 ${quote.items
-  .map((item) => `- ${item.name} (SKU ${item.product_code}, ${item.category}) x ${item.quantity}`)
+  .map(
+    (item) =>
+      `- ${item.name} (${item.product_code ? `SKU ${item.product_code}, ` : ''}${item.category}) x ${item.quantity}`
+  )
   .join('\n')}
 
 ${quote.notes ? `Notes:\n${quote.notes}\n` : ''}

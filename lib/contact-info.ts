@@ -13,17 +13,21 @@ export function mailtoUrl(subject?: string, body?: string): string {
   return `mailto:${CONTACT_EMAIL}${query ? `?${query}` : ''}`;
 }
 
-/** Pre-filled email enquiry for a specific product. */
-export function productMailtoUrl(opts: { name: string; sku: string; url?: string }): string {
+/**
+ * Pre-filled email enquiry for a specific product.
+ * `sku` is optional: Capapie does not publish item codes for every range.
+ */
+export function productMailtoUrl(opts: { name: string; sku?: string; url?: string }): string {
+  const label = opts.sku ? `${opts.name} (SKU ${opts.sku})` : opts.name;
   const body = [
     `Hi Laferla Sports,`,
     '',
     `I'd like a quote / more information on:`,
-    `${opts.name} (SKU ${opts.sku})`,
+    label,
     opts.url ? `\n${opts.url}` : '',
   ]
     .filter(Boolean)
     .join('\n');
 
-  return mailtoUrl(`Enquiry: ${opts.name} (SKU ${opts.sku})`, body);
+  return mailtoUrl(`Enquiry: ${label}`, body);
 }

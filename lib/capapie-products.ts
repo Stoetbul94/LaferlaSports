@@ -1064,7 +1064,7 @@ export function getCapapieCategories(): string[] {
 export function getFeaturedCapapieProducts(): DisplayProduct[] {
   const featuredCodes = ['1015', '1005', '1017', '1079'];
   const all = getAllCapapieProducts();
-  const featured = all.filter((p) => featuredCodes.includes(p.product_code));
+  const featured = all.filter((p) => featuredCodes.includes(p.product_code ?? ''));
   // Fall back to first 4 products if the curated codes are missing.
   return (featured.length >= 4 ? featured : all).slice(0, 4);
 }

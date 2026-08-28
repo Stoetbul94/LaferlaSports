@@ -62,7 +62,7 @@ export default function OrderSuccessPage() {
 
           <div className="space-y-6">
             <p className="text-text-secondary text-lg">
-              If you have any questions about your order, please don't hesitate to{' '}
+              If you have any questions about your order, please don’t hesitate to{' '}
               <Link href="/contact" className="text-accent hover:text-accent-light transition-colors">
                 contact us
               </Link>

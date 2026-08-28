@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "scrape-products": "node scripts/scrape-capapie.js"
   },
@@ -21,13 +21,14 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
     "@types/node": "^20.11.0",
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
     "cheerio": "^1.2.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.39.5",
     "eslint-config-next": "^16.1.1",
     "postcss": "^8.4.35",
     "sharp": "^0.34.5",
