@@ -38,7 +38,7 @@ const transporter = nodemailer.createTransport({
  * Sends a quote request notification email to the site owner.
  */
 export async function sendQuoteRequestEmail(quote: QuoteRequestPayload) {
-  const orderEmail = process.env.ORDER_EMAIL || 'orders@laferlasports.co.za';
+  const orderEmail = process.env.ORDER_EMAIL || 'info@laferlasports.com';
 
   const itemsHtml = quote.items
     .map(
@@ -155,7 +155,7 @@ Generated at ${new Date().toLocaleString('en-ZA')}`;
  * Sends a contact form message to the site owner.
  */
 export async function sendContactEmail(contact: ContactMessagePayload) {
-  const contactEmail = process.env.CONTACT_EMAIL || process.env.ORDER_EMAIL || 'info@laferlasports.co.za';
+  const contactEmail = process.env.CONTACT_EMAIL || process.env.ORDER_EMAIL || 'info@laferlasports.com';
 
   const emailHtml = `
 <!DOCTYPE html>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { whatsappUrl, PHONE_DISPLAY, CONTACT_EMAIL } from '@/lib/contact-info';
+import { mailtoUrl, CONTACT_EMAIL } from '@/lib/contact-info';
 
 export const metadata: Metadata = {
   title: 'FAQ — Ordering, Sizing & Delivery',
@@ -21,7 +21,7 @@ const FAQS: QA[] = [
   },
   {
     q: 'How do I place an order?',
-    a: "Add the items you're interested in to a quote request, or message us on WhatsApp with the product name and SKU. We reply with current pricing, availability and lead time, then confirm your order.",
+    a: "Add the items you're interested in to a quote request, or email us with the product name and SKU. We reply with current pricing, availability and lead time, then confirm your order.",
   },
   {
     q: "Why aren't prices shown on the website?",
@@ -41,7 +41,7 @@ const FAQS: QA[] = [
   },
   {
     q: 'How do I choose the right size?',
-    a: 'Each apparel product page includes a Size & Fit Guide. ISSF apparel fits firm by design — if you are unsure, send us your measurements on WhatsApp and we will recommend the right size before you order.',
+    a: 'Each apparel product page includes a Size & Fit Guide. ISSF apparel fits firm by design — if you are unsure, email us your measurements and we will recommend the right size before you order.',
   },
   {
     q: 'What if the fit or item is not right?',
@@ -53,7 +53,7 @@ const FAQS: QA[] = [
   },
   {
     q: 'How can I contact you?',
-    a: `Email ${CONTACT_EMAIL}, call/WhatsApp ${PHONE_DISPLAY}, or use the contact form. WhatsApp is usually the fastest way to reach us.`,
+    a: `Email us at ${CONTACT_EMAIL} or use the contact form on the website. We reply to all enquiries as quickly as possible during business hours.`,
   },
 ];
 
@@ -78,12 +78,10 @@ export default function FaqPage() {
             Quick answers on ordering, pricing, sizing, delivery and coaching. Can&apos;t find what
             you need?{' '}
             <a
-              href={whatsappUrl('Hi Laferla Sports, I have a question:')}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={mailtoUrl('Question for Laferla Sports')}
               className="text-accent hover:underline"
             >
-              Message us on WhatsApp
+              Email us
             </a>{' '}
             or{' '}
             <Link href="/contact" className="text-accent hover:underline">

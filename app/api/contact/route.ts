@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send contact email:', emailError);
       if (process.env.NODE_ENV === 'production') {
         return NextResponse.json(
-          { error: 'Failed to send your message. Please email us directly at info@laferlasports.co.za.' },
+          { error: 'Failed to send your message. Please email us directly at info@laferlasports.com.' },
           { status: 500 }
         );
       }

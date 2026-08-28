@@ -14,8 +14,7 @@ export const ORG = {
   legalName: 'Laferla Sports',
   url: SITE_URL,
   logo: `${SITE_URL}/images/logo.png`,
-  email: 'info@laferlasports.co.za',
-  telephone: '+27834573392',
+  email: 'info@laferlasports.com',
   country: 'ZA',
   sameAs: [] as string[],
 };

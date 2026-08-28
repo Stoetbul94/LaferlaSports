@@ -118,8 +118,8 @@ export default function LegalPage() {
               <h2 className="heading-3 mb-6 text-text-primary">9. Contact</h2>
               <p className="text-body text-lg leading-relaxed">
                 If you have questions about these terms and conditions, please contact us at{' '}
-                <a href="mailto:info@laferlasports.co.za" className="text-accent hover:text-accent-light transition-colors">
-                  info@laferlasports.co.za
+                <a href="mailto:info@laferlasports.com" className="text-accent hover:text-accent-light transition-colors">
+                  info@laferlasports.com
                 </a>
               </p>
             </section>

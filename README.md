@@ -34,7 +34,8 @@ SMTP_HOST=your-smtp-host
 SMTP_PORT=587
 SMTP_USER=your-email@example.com
 SMTP_PASS=your-password
-ORDER_EMAIL=orders@laferlasports.co.za
+ORDER_EMAIL=info@laferlasports.com
+CONTACT_EMAIL=info@laferlasports.com
 ```
 
 **Note:** For development, email sending may fail if SMTP is not configured. The site will still function, but order request emails won't be sent. In production, ensure SMTP credentials are properly configured.

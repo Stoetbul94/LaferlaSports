@@ -1,23 +1,29 @@
 /**
  * Single source of truth for business contact details.
+ * Email is the only public enquiry channel.
  */
-export const PHONE_E164 = '+27834573392';
-export const PHONE_DISPLAY = '+27 83 457 3392';
-export const WHATSAPP_NUMBER = '27834573392';
-export const CONTACT_EMAIL = 'info@laferlasports.co.za';
+export const CONTACT_EMAIL = 'info@laferlasports.com';
 
-/** Builds a wa.me deep link with an optional pre-filled message. */
-export function whatsappUrl(message?: string): string {
-  const base = `https://wa.me/${WHATSAPP_NUMBER}`;
-  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+/** Builds a mailto link with an optional pre-filled subject and body. */
+export function mailtoUrl(subject?: string, body?: string): string {
+  const params = new URLSearchParams();
+  if (subject) params.set('subject', subject);
+  if (body) params.set('body', body);
+  const query = params.toString();
+  return `mailto:${CONTACT_EMAIL}${query ? `?${query}` : ''}`;
 }
 
-/** Pre-filled WhatsApp enquiry for a specific product. */
-export function productWhatsappUrl(opts: { name: string; sku: string; url?: string }): string {
-  const lines = [
-    `Hi Laferla Sports, I'd like a quote / more info on:`,
-    `• ${opts.name} (SKU ${opts.sku})`,
-  ];
-  if (opts.url) lines.push('', opts.url);
-  return whatsappUrl(lines.join('\n'));
+/** Pre-filled email enquiry for a specific product. */
+export function productMailtoUrl(opts: { name: string; sku: string; url?: string }): string {
+  const body = [
+    `Hi Laferla Sports,`,
+    '',
+    `I'd like a quote / more information on:`,
+    `${opts.name} (SKU ${opts.sku})`,
+    opts.url ? `\n${opts.url}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  return mailtoUrl(`Enquiry: ${opts.name} (SKU ${opts.sku})`, body);
 }

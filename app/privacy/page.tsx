@@ -92,8 +92,8 @@ export default function PrivacyPage() {
               </ul>
               <p className="text-body mt-6 text-lg leading-relaxed">
                 To exercise these rights, please contact us at{' '}
-                <a href="mailto:info@laferlasports.co.za" className="text-accent hover:text-accent-light transition-colors">
-                  info@laferlasports.co.za
+                <a href="mailto:info@laferlasports.com" className="text-accent hover:text-accent-light transition-colors">
+                  info@laferlasports.com
                 </a>
               </p>
             </section>
@@ -119,8 +119,8 @@ export default function PrivacyPage() {
               <h2 className="heading-3 mb-6 text-text-primary">Contact Us</h2>
               <p className="text-body text-lg leading-relaxed">
                 If you have questions about this Privacy Policy, please contact us at{' '}
-                <a href="mailto:info@laferlasports.co.za" className="text-accent hover:text-accent-light transition-colors">
-                  info@laferlasports.co.za
+                <a href="mailto:info@laferlasports.com" className="text-accent hover:text-accent-light transition-colors">
+                  info@laferlasports.com
                 </a>
               </p>
             </section>

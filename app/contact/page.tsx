@@ -72,10 +72,10 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-lg mb-3 text-text-primary uppercase tracking-wide">Email</h3>
                   <a
-                    href="mailto:info@laferlasports.co.za"
+                    href="mailto:info@laferlasports.com"
                     className="text-accent hover:text-accent-light transition-colors text-lg"
                   >
-                    info@laferlasports.co.za
+                    info@laferlasports.com
                   </a>
                 </div>
 
