@@ -12,13 +12,28 @@ interface EnquiryStore {
   getTotalItems: () => number;
 }
 
-const STORAGE_KEY = 'laferla-enquiry';
+// Each entry stores a full product snapshot, so a saved list goes stale whenever
+// the catalogue changes — dead image paths, renamed products, discontinued items.
+// That snapshot is also what gets emailed to the owner, so serving stale data is
+// worse than losing an in-progress list. Bump this key whenever the product data
+// changes shape or product assets are renamed.
+const STORAGE_KEY = 'laferla-enquiry-v2';
+const LEGACY_STORAGE_KEYS = ['laferla-enquiry'];
 
 const loadFromStorage = (): EnquiryItem[] => {
   if (typeof window === 'undefined') return [];
   try {
+    for (const key of LEGACY_STORAGE_KEYS) localStorage.removeItem(key);
+
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
+    if (!stored) return [];
+
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (item): item is EnquiryItem =>
+        !!item?.product?.slug && typeof item.quantity === 'number' && item.quantity > 0
+    );
   } catch (error) {
     console.error('Error loading enquiry list from storage:', error);
   }
