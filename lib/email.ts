@@ -22,7 +22,6 @@ export interface QuoteRequestPayload {
 export interface ContactMessagePayload {
   name: string;
   email: string;
-  phone?: string;
   subject: string;
   message: string;
 }
@@ -42,10 +41,13 @@ function requireMailConfig() {
   }
 }
 
+const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
+  port: smtpPort,
+  secure: smtpSecure,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -198,12 +200,11 @@ export async function sendContactEmail(contact: ContactMessagePayload) {
       <h1 style="margin:0;font-size:20px;">New Contact Message — Laferla Sports</h1>
     </div>
     <div style="background:#f8f9fa;padding:20px;">
-      <p><strong>Name:</strong> ${contact.name}</p>
-      <p><strong>Email:</strong> ${contact.email}</p>
-      ${contact.phone ? `<p><strong>Phone:</strong> ${contact.phone}</p>` : ''}
-      <p><strong>Subject:</strong> ${contact.subject}</p>
+      <p><strong>Name:</strong> ${escapeHtml(contact.name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(contact.email)}</p>
+      <p><strong>Subject:</strong> ${escapeHtml(contact.subject)}</p>
       <p><strong>Message:</strong></p>
-      <p style="white-space:pre-line;">${contact.message}</p>
+      <p style="white-space:pre-line;">${escapeHtml(contact.message)}</p>
     </div>
     <div style="text-align:center;padding:20px;color:#6c757d;font-size:12px;">
       <p>Sent from the Laferla Sports website contact form.</p>
@@ -217,7 +218,7 @@ export async function sendContactEmail(contact: ContactMessagePayload) {
 
 Name: ${contact.name}
 Email: ${contact.email}
-${contact.phone ? `Phone: ${contact.phone}\n` : ''}Subject: ${contact.subject}
+Subject: ${contact.subject}
 
 Message:
 ${contact.message}

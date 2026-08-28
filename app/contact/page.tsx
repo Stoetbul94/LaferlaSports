@@ -8,7 +8,6 @@ import { z } from 'zod';
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  phone: z.string().optional(),
   subject: z.string().min(5, 'Subject must be at least 5 characters'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
 });
@@ -148,18 +147,6 @@ export default function ContactPage() {
                   {errors.email && (
                     <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>
                   )}
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-bold text-text-primary mb-3 uppercase tracking-wide">
-                    Phone Number (Optional)
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    {...register('phone')}
-                    className="w-full px-4 py-3 bg-dark-lighter border border-dark-border rounded text-text-primary focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
-                  />
                 </div>
 
                 <div>

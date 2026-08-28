@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
     const contact: ContactMessagePayload = {
       name: String(body.name),
       email: String(body.email),
-      phone: body.phone ? String(body.phone) : undefined,
       subject: String(body.subject),
       message: String(body.message),
     };

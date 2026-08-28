@@ -28,7 +28,7 @@ export default function PrivacyPage() {
               <div className="bg-dark-lighter border border-dark-border rounded-lg p-6 mb-6">
                 <h3 className="font-bold text-xl mb-4 text-text-primary uppercase tracking-wide">Information You Provide</h3>
                 <ul className="list-disc list-inside space-y-2 text-text-secondary">
-                  <li>Name and contact information (email, phone, address)</li>
+                  <li>Name and email address</li>
                   <li>Order request information and product selections</li>
                   <li>Messages and communications you send to us</li>
                 </ul>
