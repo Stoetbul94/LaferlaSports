@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
+import { useHydrated } from '@/lib/use-hydrated';
 import { usePrefersReducedMotion } from '@/lib/use-reduced-motion';
 
 /**
@@ -19,11 +20,20 @@ interface Association {
   width: number;
   height: number;
   href?: string;
+  alt?: string;
 }
 
 const ASSOCIATIONS: Association[] = [
   { name: 'South African Target Rifle Federation', logo: '/images/associations/satrf.png', width: 150, height: 125 },
   { name: 'Tech Aim Targets', logo: '/images/associations/techaim.png', width: 320, height: 100, href: 'https://www.techaim.co.za' },
+  {
+    name: 'Clay Target Shooting Association of South Africa (CTSASA)',
+    logo: '/images/associations/ctsasa.png',
+    width: 200,
+    height: 200,
+    href: 'https://ctsasa.co.za/',
+    alt: 'Clay Target Shooting Association of South Africa (CTSASA) logo',
+  },
 ];
 
 const CARD_WIDTH = 210;
@@ -40,11 +50,12 @@ function Chip({ a, eager }: { a: Association; eager: boolean }) {
     <span className="flex h-24 w-full items-center justify-center rounded-xl bg-white px-7 py-4 shadow-lg ring-1 ring-black/5">
       <Image
         src={a.logo}
-        alt={a.name}
+        alt={a.alt ?? a.name}
         width={a.width}
         height={a.height}
-        className="h-full w-auto object-contain"
+        className="h-full w-auto max-h-full object-contain"
         draggable={false}
+        unoptimized
       />
     </span>
   );
@@ -76,7 +87,11 @@ export default function AssociationsTicker() {
   const offsetRef = useRef(0);
   const pausedRef = useRef(false);
   const rafRef = useRef<number | null>(null);
-  const reduced = usePrefersReducedMotion();
+  const hydrated = useHydrated();
+  const prefersReduced = usePrefersReducedMotion();
+  // Always render the ticker on SSR/hydration, then switch if the user prefers
+  // reduced motion. Branching on matchMedia during hydrate mismatches markup.
+  const reduced = hydrated && prefersReduced;
 
   useEffect(() => {
     if (reduced) return;
